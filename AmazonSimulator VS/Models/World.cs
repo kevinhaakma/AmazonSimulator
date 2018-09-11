@@ -1,4 +1,5 @@
 using System;
+using System.Threading;
 using System.Collections.Generic;
 using System.Linq;
 using Controllers;
@@ -6,12 +7,32 @@ using Controllers;
 namespace Models {
     public class World : IObservable<Command>, IUpdatable
     {
-        private List<Robot> worldObjects = new List<Robot>();
+        private List<Bot> worldObjects = new List<Bot>();
         private List<IObserver<Command>> observers = new List<IObserver<Command>>();
         
         public World() {
             Robot r = CreateRobot(0,0,0);
             r.Move(4.6, 0, 13);
+
+            Truck truck = new Truck(0, 0, 0, 0, 0, 0);
+            worldObjects.Add(truck);
+            truck.Move(10, 0, 13);
+
+            //werkt net 
+            new Thread(() =>
+            {
+                Thread.CurrentThread.IsBackground = true;
+                for(int i = 0; i < 30; i+=5)
+                {
+                    truck.Move(i, 0, 13);
+                    truck.Update(50);
+                }
+                for (int i = 30; i > 0; i += 5)
+                {
+                    truck.Move(i, 0, 13);
+                    truck.Update(50);
+                }
+            }).Start();
         }
 
         private Robot CreateRobot(double x, double y, double z) {
@@ -37,7 +58,7 @@ namespace Models {
         }
 
         private void SendCreationCommandsToObserver(IObserver<Command> obs) {
-            foreach(Robot m3d in worldObjects) {
+            foreach(Bot m3d in worldObjects) {
                 obs.OnNext(new UpdateModel3DCommand(m3d));
             }
         }
@@ -45,7 +66,7 @@ namespace Models {
         public bool Update(int tick)
         {
             for(int i = 0; i < worldObjects.Count; i++) {
-                Robot u = worldObjects[i];
+                Bot u = worldObjects[i];
 
                 if(u is IUpdatable) {
                     bool needsCommand = ((IUpdatable)u).Update(tick);

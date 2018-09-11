@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html>
 
 <head>
@@ -85,6 +85,23 @@
 
                             var group = new THREE.Group();
                             group.add(robot);
+
+                            scene.add(group);
+                            worldObjects[command.parameters.guid] = group;
+                        }
+
+                        if (command.parameters.type == "truck") {
+                            var loader = new THREE.ObjectLoader();
+                            loader.load('model/truck.json', function (object) {
+                                object.scale.set(0.03, 0.03, 0.03)
+                                scene.add(object);
+                            });
+
+                            object.position.y = 0.15;
+
+
+                            var group = new THREE.Group();
+                            group.add(object);
 
                             scene.add(group);
                             worldObjects[command.parameters.guid] = group;
