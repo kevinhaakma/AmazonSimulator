@@ -104,6 +104,19 @@
                                 worldObjects[command.parameters.guid] = group;
                             });
                         }
+
+                        if (command.parameters.type == "shelf") {
+                            var loader = new THREE.ObjectLoader();
+                            loader.load("models/shelf.json", function (obj) {
+                                var group = new THREE.Group();
+                                obj.position.y = 0.15;
+                                obj.scale.set(2, 2, 2);
+                                group.add(obj);
+
+                                scene.add(group);
+                                worldObjects[command.parameters.guid] = group;
+                            });
+                        }
                     }
 
                     var object = worldObjects[command.parameters.guid];

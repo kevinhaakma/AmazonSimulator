@@ -7,7 +7,7 @@ using Controllers;
 namespace Models {
     public class World : IObservable<Command>, IUpdatable
     {
-        private List<Bot> worldObjects = new List<Bot>();
+        private List<Moveable> worldObjects = new List<Moveable>();
         private List<IObserver<Command>> observers = new List<IObserver<Command>>();
         private double TruckMove = 0;
         Truck truck;
@@ -16,17 +16,31 @@ namespace Models {
             Robot r = CreateRobot(0,0,0);
             r.Move(4.6, 0, 13);
 
-            truck = new Truck(0, 0, 0, 0, 0, 0);
-            worldObjects.Add(truck);
-
+            truck = CreateTruck(0, 0, 0);
             truck.Move(10, 0, 13);
 
+            Shelf shelf = CreateShelf(0, 0, 0);
+            shelf.Move(15, 0, 13);
         }
 
         private Robot CreateRobot(double x, double y, double z) {
-            Robot r = new Robot(x,y,z,0,0,0);
-            worldObjects.Add(r);
-            return r;
+            Robot robot = new Robot(x,y,z,0,0,0);
+            worldObjects.Add(robot);
+            return robot;
+        }
+
+        private Truck CreateTruck(double x, double y, double z)
+        {
+            Truck truck = new Truck(x, y, z, 0, 0, 0);
+            worldObjects.Add(truck);
+            return truck;
+        }
+
+        private Shelf CreateShelf(double x, double y, double z)
+        {
+            Shelf shelf = new Shelf(x, y, z, 0, 0, 0);
+            worldObjects.Add(shelf);
+            return shelf;
         }
 
         public IDisposable Subscribe(IObserver<Command> observer)
@@ -46,7 +60,7 @@ namespace Models {
         }
 
         private void SendCreationCommandsToObserver(IObserver<Command> obs) {
-            foreach(Bot m3d in worldObjects) {
+            foreach(Moveable m3d in worldObjects) {
                 obs.OnNext(new UpdateModel3DCommand(m3d));
             }
         }
@@ -76,7 +90,7 @@ namespace Models {
         {
             movetruck();
             for(int i = 0; i < worldObjects.Count; i++) {
-                Bot u = worldObjects[i];
+                Moveable u = worldObjects[i];
 
                 if(u is IUpdatable) {
                     bool needsCommand = ((IUpdatable)u).Update(tick);

@@ -4,7 +4,7 @@ using System.Linq;
 using Newtonsoft.Json;
 
 namespace Models {
-    public abstract class Bot : IUpdatable {
+    public abstract class Moveable : IUpdatable {
         public double _x = 0;
         public double _y = 0;
         public double _z = 0;
@@ -63,7 +63,7 @@ namespace Models {
         }
     }
 
-    public class Robot : Bot, IUpdatable
+    public class Robot : Moveable, IUpdatable
     {
         public Robot(double x, double y, double z, double rotationX, double rotationY, double rotationZ)
         {
@@ -80,7 +80,7 @@ namespace Models {
         }
     }
 
-    public class Truck : Bot, IUpdatable
+    public class Truck : Moveable, IUpdatable
     {
         public Truck(double x, double y, double z, double rotationX, double rotationY, double rotationZ)
         {
@@ -94,6 +94,42 @@ namespace Models {
             this._rX = rotationX;
             this._rY = rotationY;
             this._rZ = rotationZ;
+        }
+    }
+
+    public class Shelf : Moveable, IUpdatable
+    {
+        private List<string> items = new List<string>();
+
+        public Shelf(double x, double y, double z, double rX, double rY, double rZ)
+        {
+            type = "shelf";
+            guid = Guid.NewGuid();
+
+            this._x = x;
+            this._y = y;
+            this._z = z;
+
+            this._rX = rotationX;
+            this._rY = rotationY;
+            this._rZ = rotationZ;
+        }
+
+        public bool ContainsItems()
+        {
+            return (items.Count > 0);
+        }
+
+        public List<string> GetItems()
+        {
+            return items;
+        }
+
+        public List<string> MoveItems()
+        {
+            List<string> tmp = items;
+            items = new List<string>();
+            return items;
         }
     }
 }
