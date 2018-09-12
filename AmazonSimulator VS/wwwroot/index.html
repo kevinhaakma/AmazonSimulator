@@ -38,8 +38,9 @@
 
                 window.addEventListener('resize', onWindowResize, false);
 
+                var texture = new THREE.TextureLoader().load("textures/plane.png");
                 var geometry = new THREE.PlaneGeometry(30, 30, 32);
-                var material = new THREE.MeshBasicMaterial({ color: 0xffffff, side: THREE.DoubleSide });
+                var material = new THREE.MeshBasicMaterial({ map: texture, side: THREE.DoubleSide });
                 var plane = new THREE.Mesh(geometry, material);
                 plane.rotation.x = Math.PI / 2.0;
                 plane.position.x = 15;
