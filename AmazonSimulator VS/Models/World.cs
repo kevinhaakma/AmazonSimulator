@@ -9,30 +9,18 @@ namespace Models {
     {
         private List<Bot> worldObjects = new List<Bot>();
         private List<IObserver<Command>> observers = new List<IObserver<Command>>();
+        private double TruckMove = 0;
+        Truck truck;
         
         public World() {
             Robot r = CreateRobot(0,0,0);
             r.Move(4.6, 0, 13);
 
-            Truck truck = new Truck(0, 0, 0, 0, 0, 0);
+            truck = new Truck(0, 0, 0, 0, 0, 0);
             worldObjects.Add(truck);
+
             truck.Move(10, 0, 13);
 
-            //werkt net 
-            new Thread(() =>
-            {
-                Thread.CurrentThread.IsBackground = true;
-                for(int i = 0; i < 30; i+=5)
-                {
-                    truck.Move(i, 0, 13);
-                    truck.Update(50);
-                }
-                for (int i = 30; i > 0; i += 5)
-                {
-                    truck.Move(i, 0, 13);
-                    truck.Update(50);
-                }
-            }).Start();
         }
 
         private Robot CreateRobot(double x, double y, double z) {
@@ -63,8 +51,30 @@ namespace Models {
             }
         }
 
+        private void movetruck()
+        {
+            truck.Move(TruckMove, 0, 0);
+
+            TruckMove += 0.25;
+            if (truck.IsPaused() && TruckMove == 30)
+            {
+                TruckMove = 15.25;
+                truck.Pause(false);
+            }
+            else if (TruckMove == 15)
+            {
+                truck.Pause(true);
+            }
+            else if (TruckMove >= 30 && !truck.IsPaused())
+            {
+                TruckMove = 0;
+                truck.Move((TruckMove), 0, 0);
+            }
+        }
+
         public bool Update(int tick)
         {
+            movetruck();
             for(int i = 0; i < worldObjects.Count; i++) {
                 Bot u = worldObjects[i];
 

@@ -21,14 +21,28 @@ namespace Models {
         public double rotationY { get { return _rY; } }
         public double rotationZ { get { return _rZ; } }
 
+        private bool _Pause = false;
         public bool needsUpdate = true;
 
         public virtual void Move(double x, double y, double z) {
-            this._x = x;
-            this._y = y;
-            this._z = z;
+            if (!_Pause)
+            {
+                this._x = x;
+                this._y = y;
+                this._z = z;
 
-            needsUpdate = true;
+                needsUpdate = true;
+            }
+        }
+
+        public bool IsPaused()
+        {
+            return _Pause;
+        }
+
+        public void Pause(bool _Pause)
+        {
+            this._Pause = _Pause;
         }
 
         public virtual void Rotate(double rotationX, double rotationY, double rotationZ) {

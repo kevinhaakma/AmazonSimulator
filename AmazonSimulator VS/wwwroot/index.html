@@ -92,19 +92,16 @@
 
                         if (command.parameters.type == "truck") {
                             var loader = new THREE.ObjectLoader();
-                            loader.load('model/truck.json', function (object) {
-                                object.scale.set(0.03, 0.03, 0.03)
-                                scene.add(object);
+                            loader.load("models/truck.json", function (obj) {
+                                obj.scale.set(2, 2, 2);
+                                obj.rotation.y = Math.PI;
+
+                                var group = new THREE.Group();
+                                group.add(obj);
+
+                                scene.add(group);
+                                worldObjects[command.parameters.guid] = group;
                             });
-
-                            object.position.y = 0.15;
-
-
-                            var group = new THREE.Group();
-                            group.add(object);
-
-                            scene.add(group);
-                            worldObjects[command.parameters.guid] = group;
                         }
                     }
 
