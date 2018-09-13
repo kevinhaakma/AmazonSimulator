@@ -96,7 +96,7 @@
                             loader.load("models/truck.json", function (obj) {
                                 obj.scale.set(2, 2, 2);
                                 obj.rotation.y = Math.PI;
-
+                                obj.material = new THREE.MeshBasicMaterial({ color: 0xffffff });
                                 var group = new THREE.Group();
                                 group.add(obj);
 
@@ -106,8 +106,19 @@
                         }
 
                         if (command.parameters.type == "shelf") {
-                            var loader = new THREE.ObjectLoader();
-                            loader.load("models/shelf.json", function (obj) {
+                            var geometry = new THREE.BoxGeometry(0.7, 2, 0.7);
+                            var material = new THREE.MeshBasicMaterial({ color: 0xba9400});
+                            var robot = new THREE.Mesh(geometry, material);
+                            robot.position.y = 0.85;
+
+                            var group = new THREE.Group();
+                            group.add(robot);
+
+                            scene.add(group);
+                            worldObjects[command.parameters.guid] = group;
+
+                            /*var loader = new THREE.ObjectLoader();
+                            loader.load("models/model.json", function (obj) {
                                 var group = new THREE.Group();
                                 obj.position.y = 0.15;
                                 obj.scale.set(2, 2, 2);
@@ -115,7 +126,7 @@
 
                                 scene.add(group);
                                 worldObjects[command.parameters.guid] = group;
-                            });
+                            });*/
                         }
                     }
 

@@ -43,7 +43,7 @@
         "emissive": 0
     }],
     "animations": [{
-        "fps": 29,
+        "fps": 120,
         "tracks": [],
         "name": "default"
     }],
