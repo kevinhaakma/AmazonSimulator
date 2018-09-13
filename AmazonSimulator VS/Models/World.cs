@@ -13,14 +13,21 @@ namespace Models {
         Truck truck;
         
         public World() {
-            Robot r = CreateRobot(0,0,0);
-            r.Move(4.6, 0, 13);
+            truck = CreateTruck(10, 0, 13);
 
-            truck = CreateTruck(0, 0, 0);
-            truck.Move(10, 0, 13);
+            for (int x = 5; x < 26; x += 5)
+            {
+                Robot r = CreateRobot(x, 0, 5);
+            }
 
-            Shelf shelf = CreateShelf(0, 0, 0);
-            shelf.Move(15, 0, 13);
+
+            for (int z = 10; z < 26; z += 5)
+            {
+                for (int x = 5; x < 26; x += 5)
+                {
+                    Shelf shelf = CreateShelf(x, 0, z);
+                }
+            }
         }
 
         private Robot CreateRobot(double x, double y, double z) {
