@@ -101,7 +101,7 @@ namespace Models {
     {
         private List<string> items = new List<string>();
 
-        public Shelf(double x, double y, double z, double rX, double rY, double rZ)
+        public Shelf(double x, double y, double z, double rotationX, double rotationY, double rotationZ)
         {
             type = "shelf";
             guid = Guid.NewGuid();
