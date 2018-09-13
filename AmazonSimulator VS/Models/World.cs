@@ -20,7 +20,6 @@ namespace Models {
                 Robot r = CreateRobot(x, 0, 5);
             }
 
-
             for (double z = 10; z < 28; z += 2.625)
             {
                 for (int x = 5; x < 26; x += 5)
