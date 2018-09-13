@@ -75,7 +75,7 @@ namespace Models {
         {
             truck.Move(TruckMove, 0, 0);
 
-            TruckMove += 0.25;
+            TruckMove += 0.125;
             if (truck.IsPaused() && TruckMove == 30)
             {
                 TruckMove = 15.25;
