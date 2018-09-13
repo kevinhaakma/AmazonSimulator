@@ -106,27 +106,24 @@
                         }
 
                         if (command.parameters.type == "shelf") {
-                            var geometry = new THREE.BoxGeometry(0.7, 2, 0.7);
-                            var material = new THREE.MeshBasicMaterial({ color: 0xba9400});
-                            var robot = new THREE.Mesh(geometry, material);
-                            robot.position.y = 0.85;
+                            var geometry = new THREE.BoxGeometry(0.7, 1.4, 0.7);
+                            var cubeMaterials = [
+                                new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("textures/ShelfSide.png"), side: THREE.DoubleSide }), //LEFT
+                                new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("textures/ShelfSide.png"), side: THREE.DoubleSide }), //RIGHT
+                                new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("textures/ShelfBotTop.png"), side: THREE.DoubleSide }), //TOP
+                                new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("textures/ShelfBotTop.png"), side: THREE.DoubleSide }), //BOTTOM
+                                new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("textures/ShelfSide.png"), side: THREE.DoubleSide }), //FRONT
+                                new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("textures/ShelfSide.png"), side: THREE.DoubleSide }), //BACK
+                            ];
+                            var material = new THREE.MeshFaceMaterial(cubeMaterials);
+                            var shelf = new THREE.Mesh(geometry, material);
+                            shelf.position.y = 0.7;
 
                             var group = new THREE.Group();
-                            group.add(robot);
+                            group.add(shelf);
 
                             scene.add(group);
                             worldObjects[command.parameters.guid] = group;
-
-                            /*var loader = new THREE.ObjectLoader();
-                            loader.load("models/model.json", function (obj) {
-                                var group = new THREE.Group();
-                                obj.position.y = 0.15;
-                                obj.scale.set(2, 2, 2);
-                                group.add(obj);
-
-                                scene.add(group);
-                                worldObjects[command.parameters.guid] = group;
-                            });*/
                         }
                     }
 
