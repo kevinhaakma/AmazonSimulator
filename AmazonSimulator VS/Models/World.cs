@@ -21,7 +21,7 @@ namespace Models {
             }
 
 
-            for (int z = 10; z < 26; z += 5)
+            for (double z = 10; z < 28; z += 2.625)
             {
                 for (int x = 5; x < 26; x += 5)
                 {
