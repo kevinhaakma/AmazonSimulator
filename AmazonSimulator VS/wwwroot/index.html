@@ -8,7 +8,6 @@
 
 <body style="margin:0px;padding:0px;overflow:hidden;">
 
-
     <script>
         (function () { var script = document.createElement('script'); script.onload = function () { var stats = new Stats(); document.body.appendChild(stats.dom); requestAnimationFrame(function loop() { stats.update(); requestAnimationFrame(loop) }); }; script.src = '//rawgit.com/mrdoob/stats.js/master/build/stats.min.js'; document.head.appendChild(script); })()
         function parseCommand(input = "") {
@@ -93,16 +92,28 @@
                         }
 
                         if (command.parameters.type == "truck") {
-                            var loader = new THREE.ObjectLoader();
-                            loader.load("models/truck.json", function (obj) {
-                                obj.scale.set(2, 2, 2);
-                                obj.rotation.y = Math.PI;
-                                obj.material = new THREE.MeshBasicMaterial({ color: 0xffffff });
-                                var group = new THREE.Group();
-                                group.add(obj);
+                            var mtlLoader = new THREE.MTLLoader();
+                            mtlLoader.setBaseUrl('models/Ship/');
+                            mtlLoader.setPath('models/Ship/');
+                            var url = "materials.mtl";
+                            mtlLoader.load(url, function (materials) {
 
-                                scene.add(group);
-                                worldObjects[command.parameters.guid] = group;
+                                materials.preload();
+
+                                var objLoader = new THREE.OBJLoader();
+                                objLoader.setMaterials(materials);
+                                objLoader.setPath('models/Ship/');
+                                objLoader.load('model.obj', function (object) {
+                                    var group = new THREE.Group();
+                                    object.scale.set(10, 10, 10);
+                                    object.rotation.y = Math.PI / 2;
+                                    object.position.y = 1;
+                                    group.add(object);
+
+                                    scene.add(group);
+                                    worldObjects[command.parameters.guid] = group;
+                                });
+
                             });
                         }
 
@@ -147,6 +158,8 @@
 
     <script src="three.min.js"></script>
     <script src="OrbitControls.js"></script>
+    <script src="MTLLoader.js"></script>
+    <script src="OBJLoader.js"></script>
 </body>
 
 </html>
