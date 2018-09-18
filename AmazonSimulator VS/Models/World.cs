@@ -10,10 +10,10 @@ namespace Models {
         private List<Moveable> worldObjects = new List<Moveable>();
         private List<IObserver<Command>> observers = new List<IObserver<Command>>();
         private double TruckMove = 0;
-        Truck truck;
+        Ship ship;
         
         public World() {
-            truck = CreateTruck(10, 0, 13);
+            ship = CreateShip(10, 0, 13);
 
             for (int x = 5; x < 26; x += 5)
             {
@@ -35,9 +35,9 @@ namespace Models {
             return robot;
         }
 
-        private Truck CreateTruck(double x, double y, double z)
+        private Ship CreateShip(double x, double y, double z)
         {
-            Truck truck = new Truck(x, y, z, 0, 0, 0);
+            Ship truck = new Ship(x, y, z, 0, 0, 0);
             worldObjects.Add(truck);
             return truck;
         }
@@ -73,22 +73,22 @@ namespace Models {
 
         private void movetruck()
         {
-            truck.Move(TruckMove, 0, 0);
+            ship.Move(TruckMove, 0, 0);
 
             TruckMove += 0.125;
-            if (truck.IsPaused() && TruckMove == 30)
+            if (ship.IsPaused() && TruckMove == 30)
             {
                 TruckMove = 15.25;
-                truck.Pause(false);
+                ship.Pause(false);
             }
             else if (TruckMove == 15)
             {
-                truck.Pause(true);
+                ship.Pause(true);
             }
-            else if (TruckMove >= 30 && !truck.IsPaused())
+            else if (TruckMove >= 30 && !ship.IsPaused())
             {
                 TruckMove = 0;
-                truck.Move((TruckMove), 0, 0);
+                ship.Move((TruckMove), 0, 0);
             }
         }
 

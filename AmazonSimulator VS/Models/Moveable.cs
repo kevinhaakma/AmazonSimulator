@@ -80,11 +80,11 @@ namespace Models {
         }
     }
 
-    public class Truck : Moveable, IUpdatable
+    public class Ship : Moveable, IUpdatable
     {
-        public Truck(double x, double y, double z, double rotationX, double rotationY, double rotationZ)
+        public Ship(double x, double y, double z, double rotationX, double rotationY, double rotationZ)
         {
-            this.type = "truck";
+            this.type = "ship";
             this.guid = Guid.NewGuid();
 
             this._x = x;
