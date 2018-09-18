@@ -21,6 +21,7 @@
             var cameraControls;
 
             var worldObjects = {};
+            var raycaster, mouse = { x: 0, y: 0 };
 
             function init() {
                 camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 1, 1000);
@@ -50,7 +51,7 @@
                 light.intensity = 4;
                 scene.add(light);
 
-				scene.add(new THREE.Mesh(new THREE.SphereGeometry( 500, 8, 8), new THREE.MeshBasicMaterial({map: new THREE.TextureLoader().load("textures/seabox.png"), side: THREE.DoubleSide }))); //SKYBOX SPHERE CODE
+                scene.add(new THREE.Mesh(new THREE.SphereGeometry(500, 8, 8), new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("textures/seabox.png"), side: THREE.DoubleSide }))); //SKYBOX SPHERE CODE
 
                 var geometry = new THREE.BoxGeometry(6, 2, 3);
                 var material = new THREE.MeshBasicMaterial({ color: 0x808080 });
@@ -69,6 +70,29 @@
                 dockDoor.position.y = 0.5;
                 dockDoor.position.z = 2;
                 scene.add(dockDoor);
+
+                raycaster = new THREE.Raycaster();
+                renderer.domElement.addEventListener('click', raycast, false);
+            }
+
+            function raycast(e) {
+                // Step 1: Detect light helper
+                //1. sets the mouse position with a coordinate system where the center
+                //   of the screen is the origin
+                mouse.x = (e.clientX / window.innerWidth) * 2 - 1;
+                mouse.y = - (e.clientY / window.innerHeight) * 2 + 1;
+
+                //2. set the picking ray from the camera position and mouse coordinates
+                raycaster.setFromCamera(mouse, camera);
+
+                //3. compute intersections (note the 2nd parameter)
+                var intersects = raycaster.intersectObjects(scene.children, true);
+
+                console.log(intersects[0]);
+
+                if (intersects[0].object.name == "robot") {
+
+                }
             }
 
             function onWindowResize() {
@@ -101,6 +125,8 @@
                             ];
                             var robot = new THREE.Mesh(geometry, robotmaterials);
                             robot.position.y = 0.15;
+                            robot.name = "robot";
+
 
                             var group = new THREE.Group();
                             group.add(robot);

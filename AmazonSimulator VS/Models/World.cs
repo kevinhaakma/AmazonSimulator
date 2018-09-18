@@ -7,6 +7,7 @@ using Controllers;
 namespace Models {
     public class World : IObservable<Command>, IUpdatable
     {
+        private List<PlaneNode> planeNodes = new List<PlaneNode>();
         private List<Moveable> worldObjects = new List<Moveable>();
         private List<IObserver<Command>> observers = new List<IObserver<Command>>();
         private double ShipMove = 0;
@@ -22,9 +23,10 @@ namespace Models {
 
             for (double z = 10; z < 28; z += 2.625)
             {
-                for (int x = 25/4; x <= 25; x += (25/4))
+                for (double x = 6.5; x <= 25; x += (25/4))
                 {
                     Shelf shelf = CreateShelf(x, 0, z);
+                    planeNodes.Add(new PlaneNode(x+1, 0, z));
                 }
             }
         }
