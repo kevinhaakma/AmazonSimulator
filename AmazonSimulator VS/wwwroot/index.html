@@ -23,7 +23,7 @@
             var worldObjects = {};
 
             function init() {
-                camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 1, 1000);
+                camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 1, 2000);
                 cameraControls = new THREE.OrbitControls(camera);
                 camera.position.z = 15;
                 camera.position.y = 5;
@@ -50,7 +50,7 @@
                 light.intensity = 4;
                 scene.add(light);
 
-				scene.add(new THREE.Mesh(new THREE.SphereGeometry( 500, 8, 8), new THREE.MeshBasicMaterial({map: new THREE.TextureLoader().load("textures/seabox.png"), side: THREE.DoubleSide }))); //SKYBOX SPHERE CODE
+				scene.add(new THREE.Mesh(new THREE.SphereGeometry( 1000, 12, 12), new THREE.MeshBasicMaterial({map: new THREE.TextureLoader().load("textures/seabox.png"), side: THREE.DoubleSide }))); //SKYBOX SPHERE CODE
 
                 var geometry = new THREE.BoxGeometry(6, 2, 3);
                 var material = new THREE.MeshBasicMaterial({ color: 0x808080 });
