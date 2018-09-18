@@ -9,7 +9,7 @@ namespace Models {
     {
         private List<Moveable> worldObjects = new List<Moveable>();
         private List<IObserver<Command>> observers = new List<IObserver<Command>>();
-        private double TruckMove = 0;
+        private double ShipMove = 0;
         Ship ship;
         
         public World() {
@@ -73,22 +73,22 @@ namespace Models {
 
         private void movetruck()
         {
-            ship.Move(TruckMove, 0, 0);
+            ship.Move(ShipMove, 0, 0);
 
-            TruckMove += 0.125;
-            if (ship.IsPaused() && TruckMove == 30)
+            ShipMove += 0.125;
+            if (ship.IsPaused() && ShipMove == 30)
             {
-                TruckMove = 15.25;
+                ShipMove = 15.25;
                 ship.Pause(false);
             }
-            else if (TruckMove == 15)
+            else if (ShipMove == 15)
             {
                 ship.Pause(true);
             }
-            else if (TruckMove >= 30 && !ship.IsPaused())
+            else if (ShipMove >= 30 && !ship.IsPaused())
             {
-                TruckMove = 0;
-                ship.Move((TruckMove), 0, 0);
+                ShipMove = 0;
+                ship.Move((ShipMove), 0, 0);
             }
         }
 
