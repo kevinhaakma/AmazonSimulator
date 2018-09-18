@@ -51,6 +51,24 @@
                 scene.add(light);
 
 				scene.add(new THREE.Mesh(new THREE.SphereGeometry( 500, 8, 8), new THREE.MeshBasicMaterial({map: new THREE.TextureLoader().load("textures/seabox.png"), side: THREE.DoubleSide }))); //SKYBOX SPHERE CODE
+
+                var geometry = new THREE.BoxGeometry(6, 2, 3);
+                var material = new THREE.MeshBasicMaterial({ color: 0x808080 });
+                var dock = new THREE.Mesh(geometry, material);
+
+                dock.position.x = 15;
+                dock.position.y = 0.5;
+                dock.position.z = 2;
+                scene.add(dock);
+
+                var geometry = new THREE.BoxGeometry(6.01, 1.5, 1);
+                var material = new THREE.MeshBasicMaterial({ color: 0x000000 });
+                var dockDoor = new THREE.Mesh(geometry, material);
+
+                dockDoor.position.x = 15;
+                dockDoor.position.y = 0.5;
+                dockDoor.position.z = 2;
+                scene.add(dockDoor);
             }
 
             function onWindowResize() {
@@ -107,6 +125,7 @@
                                     object.scale.set(10, 10, 10);
                                     object.rotation.y = Math.PI / 2;
                                     object.position.y = 1;
+                                    object.position.z = -2;
                                     group.add(object);
 
                                     scene.add(group);
