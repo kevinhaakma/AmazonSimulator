@@ -7,6 +7,7 @@ using Controllers;
 namespace Models {
     public class World : IObservable<Command>, IUpdatable
     {
+        private List<ShelfNode> shelfNodes = new List<ShelfNode>();
         private List<PlaneNode> planeNodes = new List<PlaneNode>();
         private List<Moveable> worldObjects = new List<Moveable>();
         private List<IObserver<Command>> observers = new List<IObserver<Command>>();
@@ -21,14 +22,37 @@ namespace Models {
                 Robot r = CreateRobot(x, 0, 5);
             }
 
+            int i = 0;
             for (double z = 10; z < 28; z += 2.625)
             {
-                for (double x = 6.5; x <= 25; x += (25/4))
+                i++;
                 {
-                    Shelf shelf = CreateShelf(x, 0, z);
-                    planeNodes.Add(new PlaneNode(x+1, 0, z));
+                    for (double x = 6; x <= 25; x += (25 / 4))
+                    {
+                        Shelf shelf = CreateShelf(x, 0, z);
+                        if (i % 2 != 0)
+                            shelfNodes.Add(new ShelfNode(x, 0, z + 1.25));
+                    }
                 }
             }
+
+            for (double z = 0.75; z < 28; z += 5.25)
+            {
+                if (z != 6)
+                {
+                    for (double x = 2.75; x <= 27.5; x += 24)
+                    {
+                        planeNodes.Add(new PlaneNode(x, 0, z));
+                    }
+                }
+            }
+            planeNodes.Add(new PlaneNode(15, 0, 0.75));
+
+            foreach (ShelfNode node in shelfNodes)
+                worldObjects.Add(node.placeholder);
+
+            foreach (PlaneNode node in planeNodes)
+                worldObjects.Add(node.placeholder);
         }
 
         private Robot CreateRobot(double x, double y, double z) {

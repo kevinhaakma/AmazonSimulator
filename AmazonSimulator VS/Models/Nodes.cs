@@ -7,15 +7,22 @@ namespace Models
 {
     public abstract class Nodes
     {
+        public Placeholder placeholder;
+
         public double x;
         public double y;
         public double z;
+
+        public bool showNode = true;
     }
 
     public class PlaneNode : Nodes
     {
         public PlaneNode(double x, double y, double z)
         {
+            if(showNode)
+                placeholder = new Placeholder(x, y, z, 0, 0, 0);
+
             this.x = x;
             this.y = y;
             this.z = z;
@@ -26,6 +33,9 @@ namespace Models
     {
         public ShelfNode(double x, double y, double z)
         {
+            if (showNode)
+                placeholder = new Placeholder(x, y, z, 0, 0, 0);
+
             this.x = x;
             this.y = y;
             this.z = z;

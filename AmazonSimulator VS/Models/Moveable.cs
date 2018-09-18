@@ -97,6 +97,23 @@ namespace Models {
         }
     }
 
+    public class Placeholder : Moveable, IUpdatable
+    {
+        public Placeholder(double x, double y, double z, double rotationX, double rotationY, double rotationZ)
+        {
+            this.type = "placeholder";
+            this.guid = Guid.NewGuid();
+
+            this._x = x;
+            this._y = y;
+            this._z = z;
+
+            this._rX = rotationX;
+            this._rY = rotationY;
+            this._rZ = rotationZ;
+        }
+    }
+
     public class Shelf : Moveable, IUpdatable
     {
         private List<string> items = new List<string>();
