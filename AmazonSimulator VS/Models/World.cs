@@ -71,7 +71,7 @@ namespace Models {
             }
         }
 
-        private void movetruck()
+        private void moveship()
         {
             ship.Move(ShipMove, 0, 0);
 
@@ -94,7 +94,7 @@ namespace Models {
 
         public bool Update(int tick)
         {
-            movetruck();
+            moveship();
             for(int i = 0; i < worldObjects.Count; i++) {
                 Moveable u = worldObjects[i];
 
