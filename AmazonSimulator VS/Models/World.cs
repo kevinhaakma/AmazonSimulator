@@ -22,7 +22,7 @@ namespace Models {
 
             for (double z = 10; z < 28; z += 2.625)
             {
-                for (int x = 5; x < 26; x += 5)
+                for (int x = 25/4; x <= 25; x += (25/4))
                 {
                     Shelf shelf = CreateShelf(x, 0, z);
                 }
