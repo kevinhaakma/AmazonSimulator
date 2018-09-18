@@ -9,11 +9,11 @@ namespace Models {
     {
         private List<Moveable> worldObjects = new List<Moveable>();
         private List<IObserver<Command>> observers = new List<IObserver<Command>>();
-        private double TruckMove = 0;
-        Truck truck;
+        private double ShipMove = 0;
+        Ship ship;
         
         public World() {
-            truck = CreateTruck(10, 0, 13);
+            ship = CreateShip(10, 0, 13);
 
             for (int x = 5; x < 26; x += 5)
             {
@@ -22,7 +22,7 @@ namespace Models {
 
             for (double z = 10; z < 28; z += 2.625)
             {
-                for (int x = 5; x < 26; x += 5)
+                for (int x = 25/4; x <= 25; x += (25/4))
                 {
                     Shelf shelf = CreateShelf(x, 0, z);
                 }
@@ -35,9 +35,9 @@ namespace Models {
             return robot;
         }
 
-        private Truck CreateTruck(double x, double y, double z)
+        private Ship CreateShip(double x, double y, double z)
         {
-            Truck truck = new Truck(x, y, z, 0, 0, 0);
+            Ship truck = new Ship(x, y, z, 0, 0, 0);
             worldObjects.Add(truck);
             return truck;
         }
@@ -71,30 +71,30 @@ namespace Models {
             }
         }
 
-        private void movetruck()
+        private void moveship()
         {
-            truck.Move(TruckMove, 0, 0);
+            ship.Move(ShipMove, 0, 0);
 
-            TruckMove += 0.125;
-            if (truck.IsPaused() && TruckMove == 30)
+            ShipMove += 0.125;
+            if (ship.IsPaused() && ShipMove == 30)
             {
-                TruckMove = 15.25;
-                truck.Pause(false);
+                ShipMove = 15.25;
+                ship.Pause(false);
             }
-            else if (TruckMove == 15)
+            else if (ShipMove == 15)
             {
-                truck.Pause(true);
+                ship.Pause(true);
             }
-            else if (TruckMove >= 30 && !truck.IsPaused())
+            else if (ShipMove >= 30 && !ship.IsPaused())
             {
-                TruckMove = 0;
-                truck.Move((TruckMove), 0, 0);
+                ShipMove = 0;
+                ship.Move((ShipMove), 0, 0);
             }
         }
 
         public bool Update(int tick)
         {
-            movetruck();
+            moveship();
             for(int i = 0; i < worldObjects.Count; i++) {
                 Moveable u = worldObjects[i];
 

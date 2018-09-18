@@ -8,7 +8,6 @@
 
 <body style="margin:0px;padding:0px;overflow:hidden;">
 
-
     <script>
         (function () { var script = document.createElement('script'); script.onload = function () { var stats = new Stats(); document.body.appendChild(stats.dom); requestAnimationFrame(function loop() { stats.update(); requestAnimationFrame(loop) }); }; script.src = '//rawgit.com/mrdoob/stats.js/master/build/stats.min.js'; document.head.appendChild(script); })()
         function parseCommand(input = "") {
@@ -52,6 +51,24 @@
                 scene.add(light);
 
 				scene.add(new THREE.Mesh(new THREE.SphereGeometry( 500, 8, 8), new THREE.MeshBasicMaterial({map: new THREE.TextureLoader().load("textures/seabox.png"), side: THREE.DoubleSide }))); //SKYBOX SPHERE CODE
+
+                var geometry = new THREE.BoxGeometry(6, 2, 3);
+                var material = new THREE.MeshBasicMaterial({ color: 0x808080 });
+                var dock = new THREE.Mesh(geometry, material);
+
+                dock.position.x = 15;
+                dock.position.y = 0.5;
+                dock.position.z = 2;
+                scene.add(dock);
+
+                var geometry = new THREE.BoxGeometry(6.01, 1.5, 1);
+                var material = new THREE.MeshBasicMaterial({ color: 0x000000 });
+                var dockDoor = new THREE.Mesh(geometry, material);
+
+                dockDoor.position.x = 15;
+                dockDoor.position.y = 0.5;
+                dockDoor.position.z = 2;
+                scene.add(dockDoor);
             }
 
             function onWindowResize() {
@@ -74,7 +91,7 @@
                     if (Object.keys(worldObjects).indexOf(command.parameters.guid) < 0) {
                         if (command.parameters.type == "robot") {
                             var geometry = new THREE.BoxGeometry(0.9, 0.3, 0.9);
-                            var cubeMaterials = [
+                            var robotmaterials = [
                                 new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("textures/robot_side.png"), side: THREE.DoubleSide }), //LEFT
                                 new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("textures/robot_side.png"), side: THREE.DoubleSide }), //RIGHT
                                 new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("textures/robot_top.png"), side: THREE.DoubleSide }), //TOP
@@ -82,8 +99,7 @@
                                 new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("textures/robot_front.png"), side: THREE.DoubleSide }), //FRONT
                                 new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("textures/robot_front.png"), side: THREE.DoubleSide }), //BACK
                             ];
-                            var material = new THREE.MeshFaceMaterial(cubeMaterials);
-                            var robot = new THREE.Mesh(geometry, material);
+                            var robot = new THREE.Mesh(geometry, robotmaterials);
                             robot.position.y = 0.15;
 
                             var group = new THREE.Group();
@@ -93,23 +109,35 @@
                             worldObjects[command.parameters.guid] = group;
                         }
 
-                        if (command.parameters.type == "truck") {
-                            var loader = new THREE.ObjectLoader();
-                            loader.load("models/truck.json", function (obj) {
-                                obj.scale.set(2, 2, 2);
-                                obj.rotation.y = Math.PI;
-                                obj.material = new THREE.MeshBasicMaterial({ color: 0xffffff });
-                                var group = new THREE.Group();
-                                group.add(obj);
+                        if (command.parameters.type == "ship") {
+                            var mtlLoader = new THREE.MTLLoader();
+                            mtlLoader.setPath('models/Ship/');
+                            var url = "materials.mtl";
+                            mtlLoader.load(url, function (materials) {
 
-                                scene.add(group);
-                                worldObjects[command.parameters.guid] = group;
+                                materials.preload();
+
+                                var objLoader = new THREE.OBJLoader();
+                                objLoader.setMaterials(materials);
+                                objLoader.setPath('models/Ship/');
+                                objLoader.load('model.obj', function (object) {
+                                    var group = new THREE.Group();
+                                    object.scale.set(10, 10, 10);
+                                    object.rotation.y = Math.PI / 2;
+                                    object.position.y = 1;
+                                    object.position.z = -2;
+                                    group.add(object);
+
+                                    scene.add(group);
+                                    worldObjects[command.parameters.guid] = group;
+                                });
+
                             });
                         }
 
                         if (command.parameters.type == "shelf") {
                             var geometry = new THREE.BoxGeometry(0.7, 1.4, 0.7);
-                            var cubeMaterials = [
+                            var shelfmaterials = [
                                 new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("textures/ShelfSide.png"), side: THREE.DoubleSide }), //LEFT
                                 new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("textures/ShelfSide.png"), side: THREE.DoubleSide }), //RIGHT
                                 new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("textures/ShelfBotTop.png"), side: THREE.DoubleSide }), //TOP
@@ -117,8 +145,7 @@
                                 new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("textures/ShelfSide.png"), side: THREE.DoubleSide }), //FRONT
                                 new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("textures/ShelfSide.png"), side: THREE.DoubleSide }), //BACK
                             ];
-                            var material = new THREE.MeshFaceMaterial(cubeMaterials);
-                            var shelf = new THREE.Mesh(geometry, material);
+                            var shelf = new THREE.Mesh(geometry, shelfmaterials);
                             shelf.position.y = 0.7;
 
                             var group = new THREE.Group();
@@ -148,6 +175,8 @@
 
     <script src="three.min.js"></script>
     <script src="OrbitControls.js"></script>
+    <script src="MTLLoader.js"></script>
+    <script src="OBJLoader.js"></script>
 </body>
 
 </html>
