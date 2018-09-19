@@ -10,6 +10,7 @@ namespace Models {
         private List<ShelfNode> shelfNodes = new List<ShelfNode>();
         private List<PlaneNode> planeNodes = new List<PlaneNode>();
         private List<Moveable> worldObjects = new List<Moveable>();
+        private List<Robot> robots = new List<Robot>();
         private List<IObserver<Command>> observers = new List<IObserver<Command>>();
         private double ShipMove = 0;
         Ship ship;
@@ -36,6 +37,7 @@ namespace Models {
                 }
             }
 
+            planeNodes.Add(new PlaneNode(15, 0, 0.75));
             for (double z = 0.75; z < 28; z += 5.25)
             {
                 if (z != 6)
@@ -46,13 +48,14 @@ namespace Models {
                     }
                 }
             }
-            planeNodes.Add(new PlaneNode(15, 0, 0.75));
 
             foreach (ShelfNode node in shelfNodes)
                 worldObjects.Add(node.placeholder);
 
             foreach (PlaneNode node in planeNodes)
                 worldObjects.Add(node.placeholder);
+
+            CreateRobotList();
         }
 
         private Robot CreateRobot(double x, double y, double z) {
@@ -97,6 +100,19 @@ namespace Models {
             }
         }
 
+        public void CreateRobotList()
+        {
+            new Thread(() => {
+                foreach (Moveable robot in worldObjects)
+                {
+                    if (robot.GetType() == typeof(Robot))
+                    {
+                        robots.Add((Robot)robot);
+                    }
+                }
+            }).Start(); 
+        }
+
         private void moveship()
         {
             ship.Move(ShipMove, 0, 0);
@@ -120,6 +136,11 @@ namespace Models {
 
         public bool Update(int tick)
         {
+            for (int i = 0; i < 5; i++){
+                if (!robots[i].HasReached())
+                    robots[i].MoveTo(planeNodes[i+5]);
+            }
+
             moveship();
             for(int i = 0; i < worldObjects.Count; i++) {
                 Moveable u = worldObjects[i];

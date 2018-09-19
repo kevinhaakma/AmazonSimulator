@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using Newtonsoft.Json;
 
 namespace Models {
@@ -21,7 +22,7 @@ namespace Models {
         public double rotationY { get { return _rY; } }
         public double rotationZ { get { return _rZ; } }
 
-        private bool _Pause = false;
+        private bool _Pause = false, HasReachedNode = false;
         public bool needsUpdate = true;
 
         public virtual void Move(double x, double y, double z) {
@@ -33,6 +34,49 @@ namespace Models {
 
                 needsUpdate = true;
             }
+        }
+
+        public void MoveTo(Nodes node)
+        {
+            if (x < node.x)
+            {
+                //move right
+                _x += 0.125;
+            }
+
+            else if (x > node.x)
+            {
+                //move left
+                _x -= 0.125;
+            }
+
+            else if (z < node.z)
+            {
+                //move up
+                _z += 0.125;
+            }
+
+            else if (z > node.z)
+            {
+                //move down
+                _z -= 0.125;
+            }
+
+            else if (x == node.x && z == node.z)
+            {
+                HasReachedNode = true;
+            }
+            needsUpdate = true;
+        }
+
+        public void ReachedNode(bool _bool)
+        {
+            HasReachedNode = _bool;
+        }
+
+        public bool HasReached()
+        {
+            return HasReachedNode;
         }
 
         public bool IsPaused()
