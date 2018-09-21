@@ -13,6 +13,7 @@ namespace Models {
         public double _rY = 0;
         public double _rZ = 0;
 
+        public string status { get; set; }
         public string type { get; set; }
         public Guid guid { get; set; }
         public double x { get { return _x; } }
@@ -22,7 +23,7 @@ namespace Models {
         public double rotationY { get { return _rY; } }
         public double rotationZ { get { return _rZ; } }
 
-        private bool _Pause = false, HasReachedNode = false;
+        private bool _Pause = false, HasReachedPlaneNode = false, HasReachedShelfNode = false;
         public bool needsUpdate = true;
 
         public virtual void Move(double x, double y, double z) {
@@ -62,21 +63,36 @@ namespace Models {
                 _z -= 0.125;
             }
 
-            else if (x == node.x && z == node.z)
+            else if (x == node.x && z == node.z && node.GetType() == typeof(PlaneNode))
             {
-                HasReachedNode = true;
+                HasReachedPlaneNode = true;
+            }
+
+            else if (x == node.x && z == node.z && node.GetType() == typeof(ShelfNode))
+            {
+                HasReachedShelfNode = true;
             }
             needsUpdate = true;
         }
 
-        public void ReachedNode(bool _bool)
+        public void ReachedPlane(bool _bool)
         {
-            HasReachedNode = _bool;
+            HasReachedPlaneNode = _bool;
         }
 
-        public bool HasReached()
+        public void ReachedShelfNode(bool _bool)
         {
-            return HasReachedNode;
+            HasReachedShelfNode = _bool;
+        }
+
+        public bool HasReachedPlane()
+        {
+            return HasReachedPlaneNode;
+        }
+
+        public bool HasReachedShelf()
+        {
+            return HasReachedShelfNode;
         }
 
         public bool IsPaused()
@@ -112,6 +128,8 @@ namespace Models {
         public Robot(double x, double y, double z, double rotationX, double rotationY, double rotationZ)
         {
             this.type = "robot";
+            this.status = "idle";
+
             this.guid = Guid.NewGuid();
 
             this._x = x;

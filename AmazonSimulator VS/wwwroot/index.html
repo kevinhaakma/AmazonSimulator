@@ -16,10 +16,19 @@
 
         var exampleSocket;
 
+        //GUI - Bot Information
+        var gui;
+        var robotInformation = { name: "not robot", status: "not idle"};
+
         window.onload = function () {
+            gui = new dat.GUI();
+            gui.add(robotInformation, 'name');
+            gui.add(robotInformation, 'status');
+
+            //Camera & Controls
             var camera, scene, renderer;
             var cameraControls;
-
+            var robotCount = 0;
             var worldObjects = {};
             var raycaster, mouse = { x: 0, y: 0 };
 
@@ -39,6 +48,7 @@
 
                 window.addEventListener('resize', onWindowResize, false);
 
+                //Plane
                 var geometry = new THREE.PlaneGeometry(30, 30, 32);
                 var material = new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("textures/plane.png"), side: THREE.DoubleSide });
                 var plane = new THREE.Mesh(geometry, material);
@@ -47,12 +57,15 @@
                 plane.position.z = 15;
                 scene.add(plane);
 
+                //lighting
                 var light = new THREE.AmbientLight(0x404040);
                 light.intensity = 4;
                 scene.add(light);
 
-				scene.add(new THREE.Mesh(new THREE.SphereGeometry( 1000, 12, 12), new THREE.MeshBasicMaterial({map: new THREE.TextureLoader().load("textures/seabox.png"), side: THREE.DoubleSide }))); //SKYBOX SPHERE CODE
+                //skybox
+                scene.add(new THREE.Mesh(new THREE.SphereGeometry(1000, 12, 12), new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("textures/seabox.png"), side: THREE.DoubleSide }))); //SKYBOX SPHERE CODE
 
+                //ShipDock
                 var geometry = new THREE.BoxGeometry(6, 2, 3);
                 var material = new THREE.MeshBasicMaterial({ color: 0x808080 });
                 var dock = new THREE.Mesh(geometry, material);
@@ -71,27 +84,23 @@
                 dockDoor.position.z = 2;
                 scene.add(dockDoor);
 
+                //Raycaster
                 raycaster = new THREE.Raycaster();
                 renderer.domElement.addEventListener('click', raycast, false);
             }
 
             function raycast(e) {
-                // Step 1: Detect light helper
-                //1. sets the mouse position with a coordinate system where the center
-                //   of the screen is the origin
                 mouse.x = (e.clientX / window.innerWidth) * 2 - 1;
                 mouse.y = - (e.clientY / window.innerHeight) * 2 + 1;
 
-                //2. set the picking ray from the camera position and mouse coordinates
                 raycaster.setFromCamera(mouse, camera);
 
-                //3. compute intersections (note the 2nd parameter)
                 var intersects = raycaster.intersectObjects(scene.children, true);
 
-                console.log(intersects[0]);
-
-                if (intersects[0].object.name == "robot") {
-
+                if (intersects[0].object.name.includes("robot")) {
+                    var robot = intersects[0].object;
+                    robotInformation.name = robot.name;
+                    robotInformation.status = robot.userData.status;
                 }
             }
 
@@ -105,6 +114,10 @@
                 requestAnimationFrame(animate);
                 cameraControls.update();
                 renderer.render(scene, camera);
+
+                for (var i in gui.__controllers) {
+                    gui.__controllers[i].updateDisplay();
+                }
             }
 
             exampleSocket = new WebSocket("ws://" + window.location.hostname + ":" + window.location.port + "/connect_client");
@@ -125,8 +138,8 @@
                             ];
                             var robot = new THREE.Mesh(geometry, robotmaterials);
                             robot.position.y = 0.15;
-                            robot.name = "robot";
-
+                            robot.name = "robot" + robotCount++;
+                            robot.userData = { status: "idle" };
 
                             var group = new THREE.Group();
                             group.add(robot);
@@ -204,6 +217,8 @@
                     object.rotation.x = command.parameters.rotationX;
                     object.rotation.y = command.parameters.rotationY;
                     object.rotation.z = command.parameters.rotationZ;
+
+                    object.children[0].userData.status = command.parameters.status;
                 }
             }
 
@@ -216,6 +231,7 @@
     <script src="OrbitControls.js"></script>
     <script src="MTLLoader.js"></script>
     <script src="OBJLoader.js"></script>
+    <script src="dat.gui.js"></script>
 </body>
 
 </html>
