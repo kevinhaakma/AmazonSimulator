@@ -18,8 +18,8 @@
 
         //GUI - Bot Information
         var gui;
-        var ClickedRobot;
-        var robotInformation = { name: "not robot", status: "not idle" };
+        var ClickedRobot = null;
+        var robotInformation = { name: "", status: "" };
 
         window.onload = function () {
             gui = new dat.GUI();
@@ -33,21 +33,13 @@
             var worldObjects = {};
             var raycaster, mouse = { x: 0, y: 0 };
 
-            var water;
-
-            var params = {
-                color: '#ffffff',
-                scale: 20,
-                flowX: 10,
-                flowY: 10
-            };
 
             function init() {
                 camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 1, 2000);
                 cameraControls = new THREE.OrbitControls(camera);
-                camera.position.z = 15;
-                camera.position.y = 5;
-                camera.position.x = 15;
+                camera.position.z = 35;
+                camera.position.y = 15;
+                camera.position.x = 35;
                 cameraControls.update();
                 scene = new THREE.Scene();
 
@@ -80,25 +72,19 @@
 
                 scene.add(plane2);
 
-
                 // water
 
-                var waterGeometry = new THREE.PlaneBufferGeometry(30, 5);
+                var geometry3 = new THREE.BoxGeometry(30, 4, 0.2);
+                var material3 = new THREE.MeshBasicMaterial({ color: 0x89cff0 });
+                var water = new THREE.Mesh(geometry3, material3);
 
-                water = new THREE.Water(waterGeometry, {
-                    color: params.color,
-                    scale: params.scale,
-                    flowDirection: new THREE.Vector2(params.flowX, params.flowY),
-                    textureWidth: 1024,
-                    textureHeight: 1024
-                });
+                water.rotation.x = Math.PI / 2.0;
 
-                water.position.y = -0.0001;
+                water.position.y = -0.2001;
                 water.position.x = 15;
                 water.position.z = -2;
-                water.rotation.x = Math.PI * - 0.5;
-                scene.add(water);
 
+                scene.add(water);
 
                 // light
                 var ambientLight = new THREE.AmbientLight(0xcccccc, 0.4);
@@ -108,7 +94,7 @@
                 scene.add(directionalLight);
 
                 //skybox
-                scene.add(new THREE.Mesh(new THREE.SphereGeometry(1000, 12, 12), new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("textures/seabox.png"), side: THREE.DoubleSide }))); //SKYBOX SPHERE CODE
+                scene.add(new THREE.Mesh(new THREE.SphereGeometry(1000, 12, 12), new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("textures/skybox.jpg"), side: THREE.DoubleSide }))); //SKYBOX SPHERE CODE
 
                 //ShipDock
                 var geometry = new THREE.BoxGeometry(6, 2, 3);
@@ -144,8 +130,6 @@
 
                 if (intersects[0].object.name.includes("robot")) {
                     ClickedRobot = intersects[0].object;
-                    robotInformation.name = ClickedRobot.name;
-                    robotInformation.status = ClickedRobot.userData.status;
                 }
             }
 
@@ -160,8 +144,10 @@
                 cameraControls.update();
                 renderer.render(scene, camera);
 
-                robotInformation.name = ClickedRobot.name;
-                robotInformation.status = ClickedRobot.userData.status;
+                if (ClickedRobot != null) {
+                    robotInformation.name = ClickedRobot.name;
+                    robotInformation.status = ClickedRobot.userData.status;
+                }
 
                 for (var i in gui.__controllers) {
                     gui.__controllers[i].updateDisplay();
@@ -276,13 +262,14 @@
     </script>
 
     <script src="three.min.js"></script>
-    <script src="OrbitControls.js"></script>
-    <script src="MTLLoader.js"></script>
-    <script src="OBJLoader.js"></script>
-    <script src="dat.gui.js"></script>
-    <script src="Water2.js"></script>
-    <script src="Refractor.js"></script>
-    <script src="Reflector.js"></script>
+    <script src="js/loaders/MTLLoader.js"></script>
+    <script src="js/loaders/OBJLoader.js"></script>
+    <script src="js/objects/Reflector.js"></script>
+    <script src="js/objects/Refractor.js"></script>
+    <script src="js/objects/Water2.js"></script>
+    <script src="js/gui/dat.gui.js"></script>
+    <script src="js/controllers/OrbitControls.js"></script>
+    <script src="js/objects/Water2 - Copy.js"></script>
 </body>
 
 </html>
