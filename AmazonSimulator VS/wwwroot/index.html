@@ -18,7 +18,8 @@
 
         //GUI - Bot Information
         var gui;
-        var robotInformation = { name: "not robot", status: "not idle"};
+        var ClickedRobot;
+        var robotInformation = { name: "not robot", status: "not idle" };
 
         window.onload = function () {
             gui = new dat.GUI();
@@ -31,6 +32,15 @@
             var robotCount = 0;
             var worldObjects = {};
             var raycaster, mouse = { x: 0, y: 0 };
+
+            var water;
+
+            var params = {
+                color: '#ffffff',
+                scale: 20,
+                flowX: 10,
+                flowY: 10
+            };
 
             function init() {
                 camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 1, 2000);
@@ -49,18 +59,53 @@
                 window.addEventListener('resize', onWindowResize, false);
 
                 //Plane
-                var geometry = new THREE.PlaneGeometry(30, 30, 32);
+                var geometry = new THREE.BoxGeometry(30, 30, 0.2);
                 var material = new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("textures/plane.png"), side: THREE.DoubleSide });
                 var plane = new THREE.Mesh(geometry, material);
                 plane.rotation.x = Math.PI / 2.0;
                 plane.position.x = 15;
                 plane.position.z = 15;
+                plane.position.y = -0.10;
+
                 scene.add(plane);
 
-                //lighting
-                var light = new THREE.AmbientLight(0x404040);
-                light.intensity = 4;
-                scene.add(light);
+                var geometry2 = new THREE.BoxGeometry(30, 5, 0.2);
+                var material2 = new THREE.MeshBasicMaterial({ color: 0x0ac900 });
+                var plane2 = new THREE.Mesh(geometry2, material2);
+
+                plane2.rotation.x = Math.PI / 2.0;
+                plane2.position.z = -6.125;
+                plane2.position.x = 15;
+                plane2.position.y = -0.10;
+
+                scene.add(plane2);
+
+
+                // water
+
+                var waterGeometry = new THREE.PlaneBufferGeometry(30, 5);
+
+                water = new THREE.Water(waterGeometry, {
+                    color: params.color,
+                    scale: params.scale,
+                    flowDirection: new THREE.Vector2(params.flowX, params.flowY),
+                    textureWidth: 1024,
+                    textureHeight: 1024
+                });
+
+                water.position.y = -0.0001;
+                water.position.x = 15;
+                water.position.z = -2;
+                water.rotation.x = Math.PI * - 0.5;
+                scene.add(water);
+
+
+                // light
+                var ambientLight = new THREE.AmbientLight(0xcccccc, 0.4);
+                scene.add(ambientLight);
+                var directionalLight = new THREE.DirectionalLight(0xffffff, 0.6);
+                directionalLight.position.set(- 1, 1, 1);
+                scene.add(directionalLight);
 
                 //skybox
                 scene.add(new THREE.Mesh(new THREE.SphereGeometry(1000, 12, 12), new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("textures/seabox.png"), side: THREE.DoubleSide }))); //SKYBOX SPHERE CODE
@@ -98,9 +143,9 @@
                 var intersects = raycaster.intersectObjects(scene.children, true);
 
                 if (intersects[0].object.name.includes("robot")) {
-                    var robot = intersects[0].object;
-                    robotInformation.name = robot.name;
-                    robotInformation.status = robot.userData.status;
+                    ClickedRobot = intersects[0].object;
+                    robotInformation.name = ClickedRobot.name;
+                    robotInformation.status = ClickedRobot.userData.status;
                 }
             }
 
@@ -114,6 +159,9 @@
                 requestAnimationFrame(animate);
                 cameraControls.update();
                 renderer.render(scene, camera);
+
+                robotInformation.name = ClickedRobot.name;
+                robotInformation.status = ClickedRobot.userData.status;
 
                 for (var i in gui.__controllers) {
                     gui.__controllers[i].updateDisplay();
@@ -232,6 +280,9 @@
     <script src="MTLLoader.js"></script>
     <script src="OBJLoader.js"></script>
     <script src="dat.gui.js"></script>
+    <script src="Water2.js"></script>
+    <script src="Refractor.js"></script>
+    <script src="Reflector.js"></script>
 </body>
 
 </html>
