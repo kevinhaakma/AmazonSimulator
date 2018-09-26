@@ -112,27 +112,6 @@ namespace Models {
             }).Start(); 
         }
 
-        private void moveShip()
-        {
-            ship.Move(ShipMove, 0, 0);
-
-            ShipMove += 0.125;
-            if (ship.IsPaused() && ShipMove == 30)
-            {
-                ShipMove = 15.25;
-                ship.Pause(false);
-            }
-            else if (ShipMove == 15)
-            {
-                ship.Pause(true);
-            }
-            else if (ShipMove >= 30 && !ship.IsPaused())
-            {
-                ShipMove = 0;
-                ship.Move((ShipMove), 0, 0);
-            }
-        }
-
         private void moveRobot()
         {
             for (int i = 0; i < 5; i++)
@@ -152,7 +131,6 @@ namespace Models {
         public bool Update(int tick, int tickCount)
         {
             moveRobot();
-            moveShip();
             for(int i = 0; i < worldObjects.Count; i++) {
                 Moveable u = worldObjects[i];
 
