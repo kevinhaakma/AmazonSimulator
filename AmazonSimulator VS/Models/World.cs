@@ -113,26 +113,6 @@ namespace Models {
             }).Start(); 
         }
 
-        private void UpdateRobotStatus()
-        {
-            foreach(Robot robot in robots)
-            {
-                if (!robot.HasReachedPlane())
-                {
-                    robot.status = "Omw to PlaneNode";
-                }
-
-                if (!robot.HasReachedShelf())
-                {
-                    robot.status = "Omw to Shelf";
-                }
-                else
-                {
-                    robot.status = "idle";
-                }
-            }
-        }
-
         private void moveShip()
         {
             ship.Move(ShipMove, 0, 0);
@@ -173,7 +153,6 @@ namespace Models {
         public bool Update(int tick)
         {
             moveRobot();
-            UpdateRobotStatus();
             moveShip();
             for(int i = 0; i < worldObjects.Count; i++) {
                 Moveable u = worldObjects[i];

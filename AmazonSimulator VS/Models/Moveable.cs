@@ -140,6 +140,25 @@ namespace Models {
             this._rY = rotationY;
             this._rZ = rotationZ;
         }
+
+        public override bool Update(int tick)
+        {
+            if (!this.HasReachedPlane())
+            {
+                this.status = "Omw to PlaneNode";
+            }
+
+            if (!this.HasReachedShelf())
+            {
+                this.status = "Omw to Shelf";
+            }
+            else
+            {
+                this.status = "idle";
+            }
+
+            return true;
+        }
     }
 
     public class Ship : Moveable, IUpdatable
