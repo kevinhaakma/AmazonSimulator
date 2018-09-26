@@ -29,7 +29,6 @@
             //Camera & Controls
             var camera, scene, renderer;
             var cameraControls;
-            var robotCount = 0;
             var worldObjects = {};
             var raycaster, mouse = { x: 0, y: 0 };
 
@@ -160,26 +159,12 @@
 
                 if (command.command == "update") {
                     if (Object.keys(worldObjects).indexOf(command.parameters.guid) < 0) {
+
                         if (command.parameters.type == "robot") {
-                            var geometry = new THREE.BoxGeometry(0.9, 0.3, 0.9);
-                            var robotmaterials = [
-                                new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("textures/robot_side.png"), side: THREE.DoubleSide }), //LEFT
-                                new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("textures/robot_side.png"), side: THREE.DoubleSide }), //RIGHT
-                                new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("textures/robot_top.png"), side: THREE.DoubleSide }), //TOP
-                                new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("textures/robot_bottom.png"), side: THREE.DoubleSide }), //BOTTOM
-                                new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("textures/robot_front.png"), side: THREE.DoubleSide }), //FRONT
-                                new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("textures/robot_front.png"), side: THREE.DoubleSide }), //BACK
-                            ];
-                            var robot = new THREE.Mesh(geometry, robotmaterials);
-                            robot.position.y = 0.15;
-                            robot.name = "robot" + robotCount++;
-                            robot.userData = { status: "idle" };
+                            var robot = new Robot();
 
-                            var group = new THREE.Group();
-                            group.add(robot);
-
-                            scene.add(group);
-                            worldObjects[command.parameters.guid] = group;
+                            scene.add(robot);
+                            worldObjects[command.parameters.guid] = robot;
                         }
 
                         if (command.parameters.type == "ship") {
@@ -190,23 +175,10 @@
                         }
 
                         if (command.parameters.type == "shelf") {
-                            var geometry = new THREE.BoxGeometry(0.7, 1.4, 0.7);
-                            var shelfmaterials = [
-                                new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("textures/ShelfSide.png"), side: THREE.DoubleSide }), //LEFT
-                                new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("textures/ShelfSide.png"), side: THREE.DoubleSide }), //RIGHT
-                                new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("textures/ShelfBotTop.png"), side: THREE.DoubleSide }), //TOP
-                                new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("textures/ShelfBotTop.png"), side: THREE.DoubleSide }), //BOTTOM
-                                new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("textures/ShelfSide.png"), side: THREE.DoubleSide }), //FRONT
-                                new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("textures/ShelfSide.png"), side: THREE.DoubleSide }), //BACK
-                            ];
-                            var shelf = new THREE.Mesh(geometry, shelfmaterials);
-                            shelf.position.y = 0.7;
+                            var shelf = new Shelf();
 
-                            var group = new THREE.Group();
-                            group.add(shelf);
-
-                            scene.add(group);
-                            worldObjects[command.parameters.guid] = group;
+                            scene.add(shelf);
+                            worldObjects[command.parameters.guid] = shelf;
                         }
 
                         if (command.parameters.type == "placeholder") {
@@ -248,6 +220,8 @@
     <script src="js/gui/dat.gui.js"></script>
     <script src="js/controllers/OrbitControls.js"></script>
     <script src="models/Ship/Ship.js"></script>
+    <script src="Models/Robot/Robot.js"></script>
+    <script src="Models/Shelf/Shelf.js"></script>
 </body>
 
 </html>
