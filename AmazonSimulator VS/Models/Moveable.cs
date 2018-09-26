@@ -183,8 +183,11 @@ namespace Models {
             if (!this.IsPaused())
             {
                 _x += 0.125;
-                this.Move((_x), 0, 0);
-            }   
+                this.Move((_x), 0, 0);               
+            }
+
+            _rZ = Math.Cos(Convert.ToDouble(tickCount) / 5) / 64;
+            _rX = Math.Sin(Convert.ToDouble(tickCount) / 5) / 64;
 
             if (this.IsPaused() && (tickCount - lasttick == 100))
             {
