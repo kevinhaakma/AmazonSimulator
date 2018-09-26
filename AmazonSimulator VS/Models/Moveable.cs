@@ -113,7 +113,7 @@ namespace Models {
             needsUpdate = true;
         }
 
-        public virtual bool Update(int tick)
+        public virtual bool Update(int tick, int tickCount)
         {
             if(needsUpdate) {
                 needsUpdate = false;
@@ -163,6 +163,7 @@ namespace Models {
 
     public class Ship : Moveable, IUpdatable
     {
+        int lasttick;
         public Ship(double x, double y, double z, double rotationX, double rotationY, double rotationZ)
         {
             this.type = "ship";
@@ -176,6 +177,32 @@ namespace Models {
             this._rY = rotationY;
             this._rZ = rotationZ;
         }
+
+        public override bool Update(int tick, int tickCount)
+        {
+            if (!this.IsPaused())
+            {
+                _x += 0.125;
+                this.Move((_x), 0, 0);
+            }   
+
+            if (this.IsPaused() && (tickCount - lasttick == 100))
+            {
+                this.Pause(false);
+            }
+            else if (!this.IsPaused() && _x == 15)
+            {
+                this.Pause(true);
+                lasttick = tickCount;
+            }
+            else if(_x == 30)
+            {
+                _x = 0;               
+            }
+
+            return true;
+        }
+
     }
 
     public class Placeholder : Moveable, IUpdatable

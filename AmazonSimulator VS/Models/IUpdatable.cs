@@ -5,6 +5,6 @@ using System.Linq;
 namespace Models {
     interface IUpdatable
     {
-        bool Update(int tick);
+        bool Update(int tick, int tickCount);
     }
 }

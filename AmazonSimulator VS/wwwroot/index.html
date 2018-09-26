@@ -183,29 +183,10 @@
                         }
 
                         if (command.parameters.type == "ship") {
-                            var mtlLoader = new THREE.MTLLoader();
-                            mtlLoader.setPath('models/Ship/');
-                            var url = "materials.mtl";
-                            mtlLoader.load(url, function (materials) {
+                            var ship = new Ship();
 
-                                materials.preload();
-
-                                var objLoader = new THREE.OBJLoader();
-                                objLoader.setMaterials(materials);
-                                objLoader.setPath('models/Ship/');
-                                objLoader.load('model.obj', function (object) {
-                                    var group = new THREE.Group();
-                                    object.scale.set(10, 10, 10);
-                                    object.rotation.y = Math.PI / 2;
-                                    object.position.y = 1;
-                                    object.position.z = -2;
-                                    group.add(object);
-
-                                    scene.add(group);
-                                    worldObjects[command.parameters.guid] = group;
-                                });
-
-                            });
+                            scene.add(ship);
+                            worldObjects[command.parameters.guid] = ship;
                         }
 
                         if (command.parameters.type == "shelf") {
@@ -264,12 +245,9 @@
     <script src="three.min.js"></script>
     <script src="js/loaders/MTLLoader.js"></script>
     <script src="js/loaders/OBJLoader.js"></script>
-    <script src="js/objects/Reflector.js"></script>
-    <script src="js/objects/Refractor.js"></script>
-    <script src="js/objects/Water2.js"></script>
     <script src="js/gui/dat.gui.js"></script>
     <script src="js/controllers/OrbitControls.js"></script>
-    <script src="js/objects/Water2 - Copy.js"></script>
+    <script src="models/Ship/Ship.js"></script>
 </body>
 
 </html>
