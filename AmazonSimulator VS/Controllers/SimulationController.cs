@@ -15,6 +15,7 @@ namespace Controllers {
         private List<ObservingClient> views = new List<ObservingClient>();
         private bool running = false;
         private int tickTime = 25;
+        private int tickCount = 0;
 
         public SimulationController(World w) {
             this.w = w;
@@ -44,7 +45,8 @@ namespace Controllers {
             running = true;
 
             while(running) {
-                w.Update(tickTime);
+                tickCount++;
+                w.Update(tickTime, tickCount);
                 Thread.Sleep(tickTime);
             }
         }
