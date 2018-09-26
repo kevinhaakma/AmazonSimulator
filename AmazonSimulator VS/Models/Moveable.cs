@@ -141,7 +141,7 @@ namespace Models {
             this._rZ = rotationZ;
         }
 
-        public override bool Update(int tick)
+        public override bool Update(int tick, int tickCount)
         {
             if (!this.HasReachedPlane())
             {
