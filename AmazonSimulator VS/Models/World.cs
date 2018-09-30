@@ -41,7 +41,7 @@ namespace Models {
             {
                 if (z != 6)
                 {
-                    for (double x = 2.75; x <= 27.5; x += 24)
+                    for (double x = 3.25; x <= 27.5; x += 24)
                     {
                         planeNodes.Add(new PlaneNode(x, 0, z));
                     }
