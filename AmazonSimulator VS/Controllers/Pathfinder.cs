@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace AmazonSimulator
+namespace Controllers
 {
-    class SPF
+    class Pathfinder
     {
         Dictionary<char, string> locations = new Dictionary<char, string>();
 
