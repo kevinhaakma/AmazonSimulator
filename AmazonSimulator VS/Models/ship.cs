@@ -31,7 +31,7 @@ namespace Models
             if (!this.IsPaused() && _x == 15)
             {
                 this.Pause(true);
-                Freightmaster.boat();
+                // Freightmaster.boat();
             }
             else if (_x == 30)
             {
