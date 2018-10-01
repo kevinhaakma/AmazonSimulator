@@ -51,7 +51,7 @@
 
                 //Plane
                 var geometry = new THREE.BoxGeometry(30, 30, 0.2);
-                var material = new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("textures/plane.png"), side: THREE.DoubleSide });
+                var material = new THREE.MeshLambertMaterial({ map: new THREE.TextureLoader().load("textures/plane.png"), side: THREE.DoubleSide });
                 var plane = new THREE.Mesh(geometry, material);
                 plane.rotation.x = Math.PI / 2.0;
                 plane.position.x = 15;
@@ -61,7 +61,7 @@
                 scene.add(plane);
 
                 var geometry2 = new THREE.BoxGeometry(30, 5, 0.2);
-                var material2 = new THREE.MeshBasicMaterial({ color: 0x0ac900 });
+                var material2 = new THREE.MeshLambertMaterial({ color: 0x0ac900 });
                 var plane2 = new THREE.Mesh(geometry2, material2);
 
                 plane2.rotation.x = Math.PI / 2.0;
@@ -74,7 +74,7 @@
                 // water
 
                 var geometry3 = new THREE.BoxGeometry(30, 4, 0.2);
-                var material3 = new THREE.MeshBasicMaterial({ color: 0x89cff0 });
+                var material3 = new THREE.MeshLambertMaterial({ color: 0x89cff0 });
                 var water = new THREE.Mesh(geometry3, material3);
 
                 water.rotation.x = Math.PI / 2.0;
@@ -86,18 +86,18 @@
                 scene.add(water);
 
                 // light
-                var ambientLight = new THREE.AmbientLight(0xcccccc, 0.4);
+                var ambientLight = new THREE.AmbientLight(0xcccccc, 0.5);
                 scene.add(ambientLight);
                 var directionalLight = new THREE.DirectionalLight(0xffffff, 0.6);
-                directionalLight.position.set(- 1, 1, 1);
-                scene.add(directionalLight);
+                directionalLight.position.set(50, 20, 50);
+                scene.add(directionalLight)
 
                 //skybox
                 scene.add(new THREE.Mesh(new THREE.SphereGeometry(1000, 12, 12), new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("textures/skybox.jpg"), side: THREE.DoubleSide }))); //SKYBOX SPHERE CODE
 
                 //ShipDock
                 var geometry = new THREE.BoxGeometry(6, 2, 3);
-                var material = new THREE.MeshBasicMaterial({ color: 0x808080 });
+                var material = new THREE.MeshLambertMaterial({ color: 0x808080 });
                 var dock = new THREE.Mesh(geometry, material);
 
                 dock.position.x = 15;
@@ -106,13 +106,14 @@
                 scene.add(dock);
 
                 var geometry = new THREE.BoxGeometry(6.01, 1.5, 1);
-                var material = new THREE.MeshBasicMaterial({ color: 0x000000 });
+                var material = new THREE.MeshLambertMaterial({ color: 0x000000 });
                 var dockDoor = new THREE.Mesh(geometry, material);
 
                 dockDoor.position.x = 15;
                 dockDoor.position.y = 0.5;
                 dockDoor.position.z = 2;
                 scene.add(dockDoor);
+
 
                 //Raycaster
                 raycaster = new THREE.Raycaster();
