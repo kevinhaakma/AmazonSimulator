@@ -44,15 +44,67 @@ namespace Controllers {
         public void Simulate() {
             running = true;
 
-            while(running) {
+            new Thread(() =>
+            {
+                freight();
+            }).Start();
+
+            while (running) {
                 tickCount++;
                 w.Update(tickTime, tickCount);
-                Thread.Sleep(tickTime);
+                Thread.Sleep(tickTime);               
             }
         }
 
         public void EndSimulation() {
             running = false;
+        }
+
+        public void freight()
+        {
+            bool docked = false;
+            Random rnd = new Random();
+            int[] grabshelfs;
+            int shelfsindock = 0;
+
+            while (running)
+            {
+                if (w.ship.IsPaused() && !docked) //als een schip is aangekomen bij de dock(gepauseerd) en nog dit nog niet gezien is(!docked) draait 1x per ship pauze
+                {
+                    int robotshelfs = w.robots.Count() * 2;
+                    docked = true;
+                    grabshelfs = new int[10];
+                    if (shelfsindock < (robotshelfs * 3)) // als er minder dan robots * 2 * 3 in het dock staan dan worden er nog boten geladen
+                    {
+                        for (int i = 0; i < robotshelfs; i++)
+                        {
+                            int temp = rnd.Next(0, 27);
+                            if (w.shelfs[temp].x != 15 && !grabshelfs.Contains(temp))
+                            {
+                                grabshelfs[i] = temp;
+                                Console.WriteLine(temp);
+                            }
+                            else i--;
+                        }
+                        shelfsindock += robotshelfs;
+                    }
+                    else // als er robots * 2 * 3 in het dock staan dan worden er boten gelost
+                    {
+                        for (int i = 0; i < robotshelfs; i++)
+                        {
+                            int temp = rnd.Next(1, 28);
+                            if (w.shelfs[temp].x == 15 && !grabshelfs.Contains(temp))
+                            {
+                                grabshelfs[i] = temp;
+                                Console.WriteLine(temp);
+                            }
+                            else i--;
+                        }
+                        shelfsindock -= robotshelfs;
+                    }
+                }               
+            }
+            
         }
     }
 }

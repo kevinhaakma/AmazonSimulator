@@ -6,6 +6,7 @@ namespace Models
 {
     public class Ship : Moveable, IUpdatable
     {
+
         public Ship(double x, double y, double z, double rotationX, double rotationY, double rotationZ)
         {
             this.type = "ship";
@@ -31,7 +32,6 @@ namespace Models
             if (!this.IsPaused() && _x == 15)
             {
                 this.Pause(true);
-                Freightmaster.boat();
             }
             else if (_x == 30)
             {
@@ -42,6 +42,5 @@ namespace Models
             _rX = Math.Sin(Convert.ToDouble(tickCount) / 5) / 64;
             return true;
         }
-
     }
 }

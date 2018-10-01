@@ -10,16 +10,17 @@ namespace Models {
         private List<ShelfNode> shelfNodes = new List<ShelfNode>();
         private List<PlaneNode> planeNodes = new List<PlaneNode>();
         private List<Moveable> worldObjects = new List<Moveable>();
-        private List<Robot> robots = new List<Robot>();
+        public List<Robot> robots = new List<Robot>();
+        public List<Shelf> shelfs = new List<Shelf>();
         private List<IObserver<Command>> observers = new List<IObserver<Command>>();
-        Ship ship;
+        public Ship ship;
         
         public World() {
             ship = CreateShip(10, 0, 13);
 
             for (int x = 5; x < 26; x += 5)
             {
-                Robot r = CreateRobot(x, 0, 5);
+                robots.Add(CreateRobot(x, 0, 5));
             }
 
             int i = 0;
@@ -29,7 +30,7 @@ namespace Models {
                 {
                     for (double x = 6; x <= 25; x += (25 / 4))
                     {
-                        Shelf shelf = CreateShelf(x, 0, z);
+                        shelfs.Add(CreateShelf(x, 0, z));
                         if (i % 2 != 0)
                             shelfNodes.Add(new ShelfNode(x, 0, z + 1.25));
                     }
@@ -53,8 +54,6 @@ namespace Models {
 
             foreach (PlaneNode node in planeNodes)
                 worldObjects.Add(node.placeholder);
-
-            CreateRobotList();
         }
 
         private Robot CreateRobot(double x, double y, double z) {
@@ -65,9 +64,9 @@ namespace Models {
 
         private Ship CreateShip(double x, double y, double z)
         {
-            Ship truck = new Ship(x, y, z, 0, 0, 0);
-            worldObjects.Add(truck);
-            return truck;
+            Ship ship = new Ship(x, y, z, 0, 0, 0);
+            worldObjects.Add(ship);
+            return ship;
         }
 
         private Shelf CreateShelf(double x, double y, double z)
@@ -97,19 +96,6 @@ namespace Models {
             foreach(Moveable m3d in worldObjects) {
                 obs.OnNext(new UpdateModel3DCommand(m3d));
             }
-        }
-
-        public void CreateRobotList()
-        {
-            new Thread(() => {
-                foreach (Moveable robot in worldObjects)
-                {
-                    if (robot.GetType() == typeof(Robot))
-                    {
-                        robots.Add((Robot)robot);
-                    }
-                }
-            }).Start(); 
         }
 
         private void moveRobot()

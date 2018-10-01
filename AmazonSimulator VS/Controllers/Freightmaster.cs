@@ -2,15 +2,16 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Models
+
+namespace Controllers
 {
     public class Freightmaster
     {
-        bool ready = true;
-        public void boat()
+        bool docked = false;
+
+        public void boatdocked(bool docked)
         {
-            if (ready == true)
-                ready = false;
+            this.docked = docked;            
         }
     }
 }
