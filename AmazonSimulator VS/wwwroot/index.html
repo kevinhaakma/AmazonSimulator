@@ -187,6 +187,7 @@
                             var material = new THREE.MeshBasicMaterial({ color: 0x6816e0 });
                             var placeholder = new THREE.Mesh(geometry, material);
                             placeholder.position.y = 0.15;
+                            placeholder.name = "node";
 
                             var group = new THREE.Group();
                             group.add(placeholder);

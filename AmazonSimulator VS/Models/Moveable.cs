@@ -37,44 +37,6 @@ namespace Models {
             }
         }
 
-        public void MoveTo(Nodes node)
-        {
-            if (x < node.x)
-            {
-                //move right
-                _x += 0.125;
-            }
-
-            else if (x > node.x)
-            {
-                //move left
-                _x -= 0.125;
-            }
-
-            else if (z < node.z)
-            {
-                //move up
-                _z += 0.125;
-            }
-
-            else if (z > node.z)
-            {
-                //move down
-                _z -= 0.125;
-            }
-
-            else if (x == node.x && z == node.z && node.GetType() == typeof(PlaneNode))
-            {
-                HasReachedPlaneNode = true;
-            }
-
-            else if (x == node.x && z == node.z && node.GetType() == typeof(ShelfNode))
-            {
-                HasReachedShelfNode = true;
-            }
-            needsUpdate = true;
-        }
-
         public void ReachedPlane(bool _bool)
         {
             HasReachedPlaneNode = _bool;

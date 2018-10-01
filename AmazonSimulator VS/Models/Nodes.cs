@@ -12,23 +12,13 @@ namespace Models
         public double x;
         public double y;
         public double z;
+
+        public char c;
     }
 
-    public class PlaneNode : Nodes
+    public class Node : Nodes
     {
-        public PlaneNode(double x, double y, double z)
-        {
-            placeholder = new Placeholder(x, y, z, 0, 0, 0);
-
-            this.x = x;
-            this.y = y;
-            this.z = z;
-        }
-    }
-
-    public class ShelfNode : Nodes
-    {
-        public ShelfNode(double x, double y, double z)
+        public Node(double x, double y, double z)
         {
             placeholder = new Placeholder(x, y, z, 0, 0, 0);
 
@@ -44,6 +34,11 @@ namespace Models
             Shelf tmp = shelf;
             shelf = null;
             return tmp;
+        }
+
+        public void SetName(char c)
+        {
+            this.c = c;
         }
 
         public void SetShelf(Shelf shelf)
