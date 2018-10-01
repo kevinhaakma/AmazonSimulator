@@ -17,14 +17,14 @@ namespace Models {
         public static Pathfinder pathfinder = new Pathfinder();
 
        // private List<char> Vertex = new List<char>() { 'α', 'A', 'B', 'C','D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', };
-        private List<char> Vertex = new List<char>() { 'D', 'E', 'F', 'J', 'K', 'L', 'M', 'G', 'P', 'Q', 'R', 'S', 'V', 'W', 'X', 'Y', 'α', 'A', 'B', 'C',  'H', 'I',  'N', 'O', 'T', 'U',  'Z', };
+        private List<char> Vertex = new List<char>() { 'D', 'E', 'F', 'G', 'J', 'K', 'L', 'M',  'P', 'Q', 'R', 'S', 'V', 'W', 'X', 'Y', 'α', 'A', 'B', 'C',  'H', 'I',  'N', 'O', 'T', 'U',  'Z', };
 
         public World() {
             //α
             pathfinder.add_vertex('α', new Dictionary<char, int>() { { 'A', 1 }, { 'B', 1 } });               //--------------A------α------B-------------//
             pathfinder.add_vertex('A', new Dictionary<char, int>() { { 'α', 1 }, { 'C', 1 } });               //----/---------------------------------\---//
             pathfinder.add_vertex('B', new Dictionary<char, int>() { { 'α', 1 }, { 'H', 1 } });               //---C------D------E------F------G-------H--//
-            pathfinder.add_vertex('C', new Dictionary<char, int>() { { 'D', 1 }, { 'I', 1 } });               //---I------J------K------L------M-------N--//
+            pathfinder.add_vertex('C', new Dictionary<char, int>() { { 'A', 1 }, { 'D', 1 }, { 'I', 1 } });   //---I------J------K------L------M-------N--//
             pathfinder.add_vertex('D', new Dictionary<char, int>() { { 'C', 1 }, { 'E', 1 } });               //---O------P------Q------R------S-------T--//
             pathfinder.add_vertex('E', new Dictionary<char, int>() { { 'D', 1 }, { 'F', 1 } });               //---U------V------W------X------Y-------Z--//
             pathfinder.add_vertex('F', new Dictionary<char, int>() { { 'E', 1 }, { 'G', 1 } });               
@@ -37,7 +37,7 @@ namespace Models {
             pathfinder.add_vertex('M', new Dictionary<char, int>() { { 'L', 1 }, { 'N', 1 } });               
             pathfinder.add_vertex('N', new Dictionary<char, int>() { { 'M', 1 }, { 'H', 1 }, { 'T', 1 } });   
             pathfinder.add_vertex('O', new Dictionary<char, int>() { { 'I', 1 }, { 'P', 1 }, { 'U', 1 } });   
-            pathfinder.add_vertex('P', new Dictionary<char, int>() { { 'O', 1 }, { 'A', 1 } });               
+            pathfinder.add_vertex('P', new Dictionary<char, int>() { { 'O', 1 }, { 'Q', 1 } });               
             pathfinder.add_vertex('Q', new Dictionary<char, int>() { { 'P', 1 }, { 'R', 1 } });               
             pathfinder.add_vertex('R', new Dictionary<char, int>() { { 'Q', 1 }, { 'S', 1 } });               
             pathfinder.add_vertex('S', new Dictionary<char, int>() { { 'R', 1 }, { 'T', 1 } });              
@@ -70,12 +70,12 @@ namespace Models {
                 }
             }
 
-            nodes.Add(new Node(15, 0, 0.75));
+            nodes.Add(new Node(15.25, 0, 0.75));
             for (double z = 0.75; z < 28; z += 5.25)
             {
                 if (z != 6)
                 {
-                    for (double x = 3.25; x <= 27.5; x += 24)
+                    for (double x = 3.25; x <= 27.25; x += 24)
                     {
                         nodes.Add(new Node(x, 0, z));
                     }
@@ -88,7 +88,7 @@ namespace Models {
                 node.SetName(Vertex.First());
                 Vertex.RemoveAt(0);
             }
-            robots[0].MoveTo('Z');
+            robots[0].MoveTo('W');
 
         }
 
