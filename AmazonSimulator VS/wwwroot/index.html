@@ -32,6 +32,8 @@
             var worldObjects = {};
             var raycaster, mouse = { x: 0, y: 0 };
 
+            var lhouse;
+            var ship;
 
             function init() {
                 camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 1, 2000);
@@ -118,6 +120,10 @@
                 //Raycaster
                 raycaster = new THREE.Raycaster();
                 renderer.domElement.addEventListener('click', raycast, false);
+
+                //lighthouse
+                lhouse = new Lighthouse();
+                scene.add(lhouse);
             }
 
             function raycast(e) {
@@ -145,7 +151,6 @@
                 renderer.render(scene, camera);
 
                 if (ClickedRobot != null) {
-					//console.log(ClickedRobot.position);
                     robotInformation.name = ClickedRobot.name;
                     robotInformation.status = ClickedRobot.userData.status;
                 }
@@ -153,6 +158,8 @@
                 for (var i in gui.__controllers) {
                     gui.__controllers[i].updateDisplay();
                 }
+
+                lhouse.children[0].children[2].light.target = ship;
             }
 
             exampleSocket = new WebSocket("ws://" + window.location.hostname + ":" + window.location.port + "/connect_client");
@@ -170,7 +177,7 @@
                         }
 
                         if (command.parameters.type == "ship") {
-                            var ship = new Ship();
+                            ship = new Ship();
 
                             scene.add(ship);
                             worldObjects[command.parameters.guid] = ship;
@@ -225,6 +232,7 @@
     <script src="models/Ship/Ship.js"></script>
     <script src="Models/Robot/Robot.js"></script>
     <script src="Models/Shelf/Shelf.js"></script>
+    <script src="models/Lighthouse/Lighthouse.js"></script>
 </body>
 
 </html>
