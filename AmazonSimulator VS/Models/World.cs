@@ -9,10 +9,10 @@ namespace Models {
     {
         private static List<Node> nodes = new List<Node>();
         private List<Moveable> worldObjects = new List<Moveable>();
-        public List<Robot> robots = new List<Robot>();
-        public List<Shelf> shelfs = new List<Shelf>();
+        private List<Robot> robots = new List<Robot>();
+        private List<Shelf> shelfs = new List<Shelf>();
         private List<IObserver<Command>> observers = new List<IObserver<Command>>();
-        public Ship ship;
+        private Ship ship;
 
         public static Pathfinder pathfinder = new Pathfinder();
 
@@ -20,6 +20,7 @@ namespace Models {
         private List<char> Vertex = new List<char>() { 'D', 'E', 'F', 'G', 'J', 'K', 'L', 'M',  'P', 'Q', 'R', 'S', 'V', 'W', 'X', 'Y', 'α', 'A', 'B', 'C',  'H', 'I',  'N', 'O', 'T', 'U',  'Z', };
 
         public World() {
+
             //α
             pathfinder.add_vertex('α', new Dictionary<char, int>() { { 'A', 1 }, { 'B', 1 } });               //--------------A------α------B-------------//
             pathfinder.add_vertex('A', new Dictionary<char, int>() { { 'α', 1 }, { 'C', 1 } });               //----/---------------------------------\---//
@@ -51,9 +52,9 @@ namespace Models {
                                                                                                               
             ship = CreateShip(10, 0, 13);                                                                     
                                                                                                               
-            for (int x = 5; x < 26; x += 5)                                                                   
+            for (int x = 0; x < 5; x++)                                                                   
             {                                                                                                 
-                robots.Add(CreateRobot(x, 0, 5));                                                             
+                robots.Add(CreateRobot());                                                             
             }                                                                                                 
                                                                                                               
             int i = 0;
@@ -91,28 +92,18 @@ namespace Models {
             {
                 worldObjects.Add(node.placeholder);
                 node.SetName(Vertex.First());
+                foreach(Shelf shelf in node.GetAllShelves())
+                {
+                    shelf.SetNode(Vertex.First());
+                }
                 Vertex.RemoveAt(0);
             }
 
-            //whilerunning{}
-            foreach(Robot robot in robots)
-            {
-                foreach (Node node in nodes)
-                {
-                    if (node.HasShelf())
-                    {
-                        robot.MoveTo(node.c);
-                        break;
-                        //add task - pickup shelf
-                        //add task - goto dock
-                        //repeat
-                    }
-                }
-            }
+            
         }
 
-        private Robot CreateRobot(double x, double y, double z) {
-            Robot robot = new Robot(x,y,z,0,0,0);
+        private Robot CreateRobot() {
+            Robot robot = new Robot(15.25, 0, 0.75, 0,0,0);
             worldObjects.Add(robot);
             return robot;
         }
@@ -134,6 +125,21 @@ namespace Models {
         public static List<Node> GetNodes()
         {
             return nodes;
+        }
+
+        public List<Robot> GetRobots()
+        {
+            return robots;
+        }
+
+        public List<Shelf> GetShelfs()
+        {
+            return shelfs;
+        }
+
+        public Ship GetShip()
+        {
+            return ship;
         }
 
         public IDisposable Subscribe(IObserver<Command> observer)
@@ -158,14 +164,8 @@ namespace Models {
             }
         }
 
-        private void moveRobot()
-        {
- 
-        }
-
         public bool Update(int tick, int tickCount)
         {
-            moveRobot();
             for(int i = 0; i < worldObjects.Count; i++) {
                 Moveable u = worldObjects[i];
 

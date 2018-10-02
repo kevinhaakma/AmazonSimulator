@@ -6,7 +6,10 @@ namespace Models
 {
     public class Robot : Moveable, IUpdatable
     {
-        List<Node> PathToDestNodes = new List<Node>();
+        private List<Node> PathToDestNodes = new List<Node>();
+        private List<Tasks> tasks = new List<Tasks>();
+        private Shelf shelf;
+        private bool moving = false;
 
         public Robot(double x, double y, double z, double rotationX, double rotationY, double rotationZ)
         {
@@ -26,54 +29,78 @@ namespace Models
 
         public override bool Update(int tick, int tickCount)
         {
-            if (PathToDestNodes.Count > 0)
+            if (tasks.Count == 0 && !moving)
             {
-                if (x < PathToDestNodes[0].x)
+                this.status = "idle";
+            }
+            else if (tasks.Count > 0 && !moving){
+                if (tasks[0] is MoveTask)
+                {
+                    MoveTask Task = tasks[0] as MoveTask;
+                    this.MoveTo(Task.getinfo());
+                    if(Task.getinfo() == 'α')
+                        this.status = "Omw to dock";
+                    else
+                        this.status = "Omw to " + Task.getinfo();
+                    moving = true;
+                }
+                else if (tasks[0] is DropShelf)
+                {
+                    DropShelf Task = tasks[0] as DropShelf;
+                    shelf.Move(Task.getinfo()[0], 0, Task.getinfo()[1]);
+                    shelf = null;
+                    tasks.RemoveAt(0);
+                }
+                else if (tasks[0] is PickupShelf)
+                {
+                    PickupShelf Task = tasks[0] as PickupShelf;
+                    this.shelf = Task.getinfo();
+                    this.shelf.Move(_x,0.3,_z);
+                    tasks.RemoveAt(0);
+                }
+            }
+
+            if (PathToDestNodes.Count > 0 && moving)
+            {
+                if (_x < PathToDestNodes[0].x)
                 {
                     //move right
                     _x += 0.125;
                 }
 
-                else if (x > PathToDestNodes[0].x)
+                else if (_x > PathToDestNodes[0].x)
                 {
                     //move left
                     _x -= 0.125;
                 }
 
-                else if (z < PathToDestNodes[0].z)
+                else if (_z < PathToDestNodes[0].z)
                 {
                     //move up
                     _z += 0.125;
                 }
 
-                else if (z > PathToDestNodes[0].z)
+                else if (_z > PathToDestNodes[0].z)
                 {
                     //move down
                     _z -= 0.125;
                 }
 
-                if(x == PathToDestNodes[0].x && z == PathToDestNodes[0].z)
+                if (shelf != null)
+                {
+                    shelf.Move(_x, 0.3, _z);
+                }
+
+                if (x == PathToDestNodes[0].x && z == PathToDestNodes[0].z)
                 {
                     PathToDestNodes.RemoveAt(0);
+                    if(PathToDestNodes.Count == 0)
+                    {
+                        tasks.RemoveAt(0);
+                        moving = false;
+                    }                        
                 }
             }
-
-
-            //Robot status updates
-            if (!this.HasReachedPlane())
-            {
-                this.status = "Omw to PlaneNode";
-            }
-
-            if (!this.HasReachedShelf())
-            {
-                this.status = "Omw to Shelf";
-            }
-            else
-            {
-                this.status = "idle";
-            }
-
             return true;
         }
 
@@ -97,7 +124,7 @@ namespace Models
                 }
             }
 
-            ClosestNode.c = CurrentPos;
+            CurrentPos = ClosestNode.c;
 
             List<char> PathToDestChar = new List<char>();
 
@@ -115,6 +142,11 @@ namespace Models
             }
             PathToDestNodes.Reverse();
             needsUpdate = true;
+        }
+
+        public void addtask(Tasks task)
+        {
+            tasks.Add(task);
         }
     }
 }

@@ -34,6 +34,11 @@ namespace Models
             this.c = c;
         }
 
+        public List<Shelf> GetAllShelves()
+        {
+            return shelves;
+        }
+
         public Shelf GetShelf()
         {
             if (shelves[0] != null)
