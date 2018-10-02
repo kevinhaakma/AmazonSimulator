@@ -7,7 +7,7 @@ namespace Models
 {
     public abstract class Nodes
     {
-        public Placeholder placeholder;
+        //public Placeholder placeholder;
 
         public double x;
         public double y;
@@ -22,7 +22,7 @@ namespace Models
 
         public Node(double x, double y, double z)
         {
-            placeholder = new Placeholder(x, y, z, 0, 0, 0);
+            //placeholder = new Placeholder(x, y, z, 0, 0, 0);
 
             this.x = x;
             this.y = y;
