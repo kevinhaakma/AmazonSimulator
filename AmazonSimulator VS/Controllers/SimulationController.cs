@@ -82,7 +82,6 @@ namespace Controllers {
                             if (w.GetShelfs()[temp].x != 15.25 && !grabshelfs.Contains(temp))
                             {
                                 grabshelfs[i] = temp;
-                                Console.WriteLine(temp);
                             }
                             else i--;
                         }
@@ -109,7 +108,6 @@ namespace Controllers {
                             if (w.GetShelfs()[temp].x == 15.25 && !grabshelfs.Contains(temp))
                             {
                                 grabshelfs[i] = temp;
-                                Console.WriteLine(temp);
                             }
                             else i--;
                         }

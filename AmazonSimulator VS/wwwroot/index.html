@@ -74,7 +74,6 @@
                 scene.add(plane2);
 
                 // water
-
                 var geometry3 = new THREE.BoxGeometry(30, 4, 0.2);
                 var material3 = new THREE.MeshLambertMaterial({ color: 0x89cff0 });
                 var water = new THREE.Mesh(geometry3, material3);
@@ -103,19 +102,18 @@
                 var dock = new THREE.Mesh(geometry, material);
 
                 dock.position.x = 15;
-                dock.position.y = 0.5;
-                dock.position.z = 2;
+                dock.position.y = 0.71;
+                dock.position.z = 1.6;
                 scene.add(dock);
 
-                var geometry = new THREE.BoxGeometry(6.01, 1.5, 1);
+                var geometry = new THREE.BoxGeometry(6.01, 1.5, 2.5);
                 var material = new THREE.MeshLambertMaterial({ color: 0x000000 });
                 var dockDoor = new THREE.Mesh(geometry, material);
 
                 dockDoor.position.x = 15;
-                dockDoor.position.y = 0.5;
-                dockDoor.position.z = 2;
+                dockDoor.position.y = 0.71;
+                dockDoor.position.z = 1.6;
                 scene.add(dockDoor);
-
 
                 //Raycaster
                 raycaster = new THREE.Raycaster();
@@ -190,7 +188,7 @@
                             worldObjects[command.parameters.guid] = shelf;
                         }
 
-                        if (command.parameters.type == "placeholder") {
+                        /*if (command.parameters.type == "placeholder") { //DEBUGGING NODES MOMENTEEL OP FALSE
                             var geometry = new THREE.BoxGeometry(0.2, 0.2, 0.2);
                             var material = new THREE.MeshBasicMaterial({ color: 0x6816e0 });
                             var placeholder = new THREE.Mesh(geometry, material);
@@ -202,7 +200,7 @@
 
                             scene.add(group);
                             worldObjects[command.parameters.guid] = group;
-                        }
+                        }*/
                     }
 
                     var object = worldObjects[command.parameters.guid];
@@ -215,7 +213,8 @@
                     object.rotation.y = command.parameters.rotationY;
                     object.rotation.z = command.parameters.rotationZ;
 
-                    object.children[0].userData.status = command.parameters.status;
+					if(command.parameters.status != null)
+						object.children[0].userData.status = command.parameters.status;
                 }
             }
 

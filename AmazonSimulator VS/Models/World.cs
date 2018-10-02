@@ -16,7 +16,6 @@ namespace Models {
 
         public static Pathfinder pathfinder = new Pathfinder();
 
-       // private List<char> Vertex = new List<char>() { 'α', 'A', 'B', 'C','D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', };
         private List<char> Vertex = new List<char>() { 'D', 'E', 'F', 'G', 'J', 'K', 'L', 'M',  'P', 'Q', 'R', 'S', 'V', 'W', 'X', 'Y', 'α', 'A', 'B', 'C',  'H', 'I',  'N', 'O', 'T', 'U',  'Z', };
 
         public World() {
@@ -76,21 +75,21 @@ namespace Models {
                 }
             }
 
-            nodes.Add(new Node(15.25, 0, 0.75));
-            for (double z = 0.75; z < 28; z += 5.25)
+            nodes.Add(new Node(15.25, 0, 1.5));
+            nodes.Add(new Node(3.25, 0, 1.5));
+            nodes.Add(new Node(27.25, 0, 1.5));
+
+            for (double z = 11.25; z < 28; z += 5.25)
             {
-                if (z != 6)
+                for (double x = 3.25; x <= 27.25; x += 24)
                 {
-                    for (double x = 3.25; x <= 27.25; x += 24)
-                    {
-                        nodes.Add(new Node(x, 0, z));
-                    }
+                    nodes.Add(new Node(x, 0, z));
                 }
             }
 
             foreach (Node node in nodes)
             {
-                worldObjects.Add(node.placeholder);
+                //worldObjects.Add(node.placeholder);
                 node.SetName(Vertex.First());
                 foreach(Shelf shelf in node.GetAllShelves())
                 {
@@ -103,7 +102,7 @@ namespace Models {
         }
 
         private Robot CreateRobot() {
-            Robot robot = new Robot(15.25, 0, 0.75, 0,0,0);
+            Robot robot = new Robot(15.25, 0, 1.5, 0,0,0);
             worldObjects.Add(robot);
             return robot;
         }
