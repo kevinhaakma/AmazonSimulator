@@ -7,7 +7,6 @@ namespace Models
     public class Robot : Moveable, IUpdatable
     {
         List<Node> PathToDestNodes = new List<Node>();
-        private bool HasPath = false;
 
         public Robot(double x, double y, double z, double rotationX, double rotationY, double rotationZ)
         {
