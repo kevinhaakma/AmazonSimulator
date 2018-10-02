@@ -65,24 +65,28 @@ namespace Models
                 if (_x < PathToDestNodes[0].x)
                 {
                     //move right
+                    _rY = Math.PI/2;
                     _x += 0.125;
                 }
 
                 else if (_x > PathToDestNodes[0].x)
                 {
                     //move left
+                    _rY = -Math.PI/2;
                     _x -= 0.125;
                 }
 
                 else if (_z < PathToDestNodes[0].z)
                 {
                     //move up
+                    _rY = 0;
                     _z += 0.125;
                 }
 
                 else if (_z > PathToDestNodes[0].z)
                 {
                     //move down
+                    _rY = Math.PI;
                     _z -= 0.125;
                 }
 
