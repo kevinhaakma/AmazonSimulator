@@ -79,7 +79,7 @@ namespace Controllers {
                         for (int i = 0; i < robotshelfs; i++)
                         {
                             int temp = rnd.Next(0, 27);
-                            if (w.shelfs[temp].x != 15 && !grabshelfs.Contains(temp))
+                            if (w.shelfs[temp].x != 15.25 && !grabshelfs.Contains(temp))
                             {
                                 grabshelfs[i] = temp;
                                 Console.WriteLine(temp);
@@ -93,7 +93,7 @@ namespace Controllers {
                         for (int i = 0; i < robotshelfs; i++)
                         {
                             int temp = rnd.Next(1, 28);
-                            if (w.shelfs[temp].x == 15 && !grabshelfs.Contains(temp))
+                            if (w.shelfs[temp].x == 15.25 && !grabshelfs.Contains(temp))
                             {
                                 grabshelfs[i] = temp;
                                 Console.WriteLine(temp);
