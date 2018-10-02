@@ -18,6 +18,8 @@ namespace Models
 
     public class Node : Nodes
     {
+        private List<Shelf> shelves = new List<Shelf>();
+
         public Node(double x, double y, double z)
         {
             placeholder = new Placeholder(x, y, z, 0, 0, 0);
@@ -27,29 +29,33 @@ namespace Models
             this.z = z;
         }
 
-        private Shelf shelf;
-
-        public Shelf GetShelf()
-        {
-            Shelf tmp = shelf;
-            shelf = null;
-            return tmp;
-        }
-
         public void SetName(char c)
         {
             this.c = c;
         }
 
+        public Shelf GetShelf()
+        {
+            if (shelves[0] != null)
+                return shelves[0];
+
+            else
+                return shelves[1];    
+        }
+
         public void SetShelf(Shelf shelf)
         {
-            this.shelf = shelf;
-            this.shelf.Move(x, y, z);
+            shelves.Add(shelf);
+        }
+
+        public void AddShelfRange(List<Shelf> shelves)
+        {
+            this.shelves.AddRange(shelves);
         }
 
         public bool HasShelf()
         {
-            return (shelf != null);
+            return (shelves.Count > 0);
         }
     }
 }

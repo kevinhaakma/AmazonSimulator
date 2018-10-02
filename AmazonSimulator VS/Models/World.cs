@@ -63,9 +63,14 @@ namespace Models {
                 {
                     for (double x = 6; x <= 25; x += (25 / 4))
                     {
-                        shelfs.Add(CreateShelf(x, 0, z));
                         if (i % 2 != 0)
-                            nodes.Add(new Node(x, 0, z + 1.25));
+                        {
+                            List<Shelf> shelves = new List<Shelf>() { CreateShelf(x, 0, z), CreateShelf(x, 0, z + 2.5) };
+                            Node node = new Node(x, 0, z + 1.25);
+                            node.AddShelfRange(shelves);
+                            nodes.Add(node);
+                            shelfs.AddRange(shelves);
+                        }
                     }
                 }
             }
@@ -88,8 +93,22 @@ namespace Models {
                 node.SetName(Vertex.First());
                 Vertex.RemoveAt(0);
             }
-            robots[0].MoveTo('W');
 
+            //whilerunning{}
+            foreach(Robot robot in robots)
+            {
+                foreach (Node node in nodes)
+                {
+                    if (node.HasShelf())
+                    {
+                        robot.MoveTo(node.c);
+                        break;
+                        //add task - pickup shelf
+                        //add task - goto dock
+                        //repeat
+                    }
+                }
+            }
         }
 
         private Robot CreateRobot(double x, double y, double z) {
