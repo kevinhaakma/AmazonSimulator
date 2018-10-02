@@ -102,9 +102,9 @@ namespace Controllers {
                         }
                         shelfsindock -= robotshelfs;
                     }
-                }               
-            }
-            
+                }
+                Thread.Sleep(tickTime * 5);
+            }           
         }
     }
 }
