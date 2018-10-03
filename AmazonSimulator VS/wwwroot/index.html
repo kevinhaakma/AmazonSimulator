@@ -163,8 +163,8 @@
                     if (test == 100) {
                         test = 0;}
                     
-                    lhouse.children[0].children[2].position.x += Math.cos(test += 0.125 / 6);
-                    lhouse.children[0].children[2].position.z += Math.sin(test += 0.125 / 6);
+                    lhouse.children[0].children[2].position.x += Math.cos(test += 0.125 / 6/2);
+                    lhouse.children[0].children[2].position.z += Math.sin(test += 0.125 / 6/2);
 
                     lhouse.children[0].children[1].target = lhouse.children[0].children[2];
                     lhouse.children[0].children[3].lookAt(lhouse.children[0].children[2].position.x, lhouse.children[0].children[2].position.y, lhouse.children[0].children[2].position.z); 
