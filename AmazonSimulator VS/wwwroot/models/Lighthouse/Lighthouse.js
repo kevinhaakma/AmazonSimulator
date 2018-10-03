@@ -30,6 +30,13 @@
 
                 var light = new THREE.SpotLight(0xffffff, 1, 10);
                 light.position.set(27.85, 9.5, -6.9);
+                group.add(placeholder);
+
+                var geometry = new THREE.SphereGeometry(2.5, 2.5, 2.5);
+                var material = new THREE.MeshBasicMaterial({ color: 0xffb2b2 });
+                var placeholder = new THREE.Mesh(geometry, material);
+                placeholder.position.set(30, 9.5, -30);
+                placeholder.rotation.y += Math.PI / 16;
                 group.add(light);
 
                 selfRef.add(group);

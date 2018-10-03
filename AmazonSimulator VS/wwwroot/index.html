@@ -87,10 +87,10 @@
                 scene.add(water);
 
                 // light
-                var ambientLight = new THREE.AmbientLight(0xcccccc, 0.5);
+                var ambientLight = new THREE.AmbientLight(0xcccccc, 0.25);
                 scene.add(ambientLight);
                 var directionalLight = new THREE.DirectionalLight(0xffffff, 0.6);
-                directionalLight.position.set(50, 20, 50);
+                directionalLight.position.set(35, 35, 35);
                 scene.add(directionalLight)
 
                 //skybox
@@ -143,6 +143,7 @@
                 renderer.setSize(window.innerWidth, window.innerHeight);
             }
 
+            var test = 0;
             function animate() {
                 requestAnimationFrame(animate);
                 cameraControls.update();
@@ -157,7 +158,14 @@
                     gui.__controllers[i].updateDisplay();
                 }
 
-                lhouse.children[0].children[2].light.target = ship;
+                if (test == 100) {
+                    test = 0;
+                }
+
+                lhouse.children[0].children[2].position.x += Math.cos(test+=0.125/6);
+                lhouse.children[0].children[2].position.z += Math.sin(test += 0.125 / 6);
+
+                lhouse.children[0].children[1].light.target = lhouse.children[0].children[2];
             }
 
             exampleSocket = new WebSocket("ws://" + window.location.hostname + ":" + window.location.port + "/connect_client");
