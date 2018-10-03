@@ -28,16 +28,30 @@
 
                 group.add(object);
 
-                var light = new THREE.SpotLight(0xffffff, 1, 10);
+                var light = new THREE.SpotLight(0xffe9a2, 1, 40);
                 light.position.set(27.85, 9.5, -6.9);
-                group.add(placeholder);
+                light.angle = 0.25;
+                group.add(light);
 
                 var geometry = new THREE.SphereGeometry(2.5, 2.5, 2.5);
-                var material = new THREE.MeshBasicMaterial({ color: 0xffb2b2 });
+                var material = new THREE.MeshBasicMaterial({ color: 0xffe9a2 });
                 var placeholder = new THREE.Mesh(geometry, material);
-                placeholder.position.set(30, 9.5, -30);
+                placeholder.position.set(30, 2, -30);
                 placeholder.rotation.y += Math.PI / 16;
-                group.add(light);
+                placeholder.name = "LightPointer";
+                placeholder.visible = false;
+                group.add(placeholder);
+
+                // add spot light
+                var geometry = new THREE.CylinderGeometry(0.1, 1.5, 10, 32 * 2, 20, true);
+                geometry.applyMatrix(new THREE.Matrix4().makeTranslation(0, -geometry.parameters.height / 2, 0));
+                geometry.applyMatrix(new THREE.Matrix4().makeRotationX(-Math.PI / 2));
+                var material = new THREEx.VolumetricSpotLightMaterial();
+                var mesh = new THREE.Mesh(geometry, material);
+                mesh.position.set(27.85, 7.25, -6.9);
+                material.uniforms.lightColor.value.set(0xffe9a2);
+                material.uniforms.spotPosition.value = mesh.position;
+                group.add(mesh);
 
                 selfRef.add(group);
             });

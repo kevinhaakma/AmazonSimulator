@@ -27,17 +27,12 @@
                 object.position.z = -2;
                 group.add(object);
 
-                var light = new THREE.PointLight(0xff0000, 1, 5);
-                light.position.set(-2.455, 2.90, -1.955);
-                group.add(light);
-
                 var geometry = new THREE.SphereGeometry(0.025, 0.025, 0.025);
                 var material = new THREE.MeshBasicMaterial({ color: 0xffb2b2 });
                 var placeholder = new THREE.Mesh(geometry, material);
                 placeholder.position.set(-2.455, 2.85, -1.955);
 
                 group.add(placeholder);
-
                 selfRef.add(group);
             });
 

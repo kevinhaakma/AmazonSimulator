@@ -122,6 +122,7 @@
                 //lighthouse
                 lhouse = new Lighthouse();
                 scene.add(lhouse);
+                
             }
 
             function raycast(e) {
@@ -158,14 +159,16 @@
                     gui.__controllers[i].updateDisplay();
                 }
 
-                if (test == 100) {
-                    test = 0;
+                if (lhouse != null) {
+                    if (test == 100) {
+                        test = 0;}
+                    
+                    lhouse.children[0].children[2].position.x += Math.cos(test += 0.125 / 6);
+                    lhouse.children[0].children[2].position.z += Math.sin(test += 0.125 / 6);
+
+                    lhouse.children[0].children[1].target = lhouse.children[0].children[2];
+                    lhouse.children[0].children[3].lookAt(lhouse.children[0].children[2].position.x, lhouse.children[0].children[2].position.y, lhouse.children[0].children[2].position.z); 
                 }
-
-                lhouse.children[0].children[2].position.x += Math.cos(test+=0.125/6);
-                lhouse.children[0].children[2].position.z += Math.sin(test += 0.125 / 6);
-
-                lhouse.children[0].children[1].light.target = lhouse.children[0].children[2];
             }
 
             exampleSocket = new WebSocket("ws://" + window.location.hostname + ":" + window.location.port + "/connect_client");
@@ -221,8 +224,8 @@
                     object.rotation.y = command.parameters.rotationY;
                     object.rotation.z = command.parameters.rotationZ;
 
-					if(command.parameters.status != null)
-						object.children[0].userData.status = command.parameters.status;
+                    if (command.parameters.status != null)
+                        object.children[0].userData.status = command.parameters.status;
                 }
             }
 
@@ -240,6 +243,7 @@
     <script src="Models/Robot/Robot.js"></script>
     <script src="Models/Shelf/Shelf.js"></script>
     <script src="models/Lighthouse/Lighthouse.js"></script>
+    <script src="js/lighting/threex.volumetricspotlightmaterial.js"></script>
 </body>
 
 </html>
