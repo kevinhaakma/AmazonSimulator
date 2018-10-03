@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Controllers
+namespace Models
 {
     public class Pathfinder
     {

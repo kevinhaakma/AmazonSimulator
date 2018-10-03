@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading;
 using Models;
 using Views;
@@ -12,6 +11,7 @@ namespace Controllers {
     }
     public class SimulationController {
         private World w;
+        Freightmaster master = new Freightmaster();
         private List<ObservingClient> views = new List<ObservingClient>();
         private bool running = false;
         private int tickTime = 25;
@@ -51,7 +51,7 @@ namespace Controllers {
 
             while (running) {
                 tickCount++;
-                w.Update(tickTime, tickCount);
+                w.Update(tickTime, tickCount);               
                 Thread.Sleep(tickTime);               
             }
         }
@@ -61,86 +61,10 @@ namespace Controllers {
         }
 
         public void freight()
-        {
-            bool docked = false;
-            Random rnd = new Random();
-            int[] grabshelfs;
-            int shelfsindock = 0;
-
+        {           
             while (running)
             {
-                if (w.GetShip().IsPaused() && !docked) //als een schip is aangekomen bij de dock(gepauseerd) en nog dit nog niet gezien is(!docked) draait 1x per ship pauze
-                {
-                    int robotshelfs = w.GetRobots().Count() * 2;
-                    docked = true;
-                    grabshelfs = new int[robotshelfs];
-                    if (shelfsindock < (robotshelfs * 2)) // als er minder dan robots * 2 * 3 in het dock staan dan worden er nog boten geladen
-                    {
-                        for (int i = 0; i < robotshelfs; i++)
-                        {
-                            int temp = rnd.Next(0, 32);
-                            if (w.GetShelfs()[temp].x != 15.25 && !grabshelfs.Contains(temp))
-                            {
-                                grabshelfs[i] = temp;
-                            }
-                            else i--;
-                        }
-                        shelfsindock += robotshelfs;
-
-                        int e = 0;
-                        for (int a = 0; a < 2; a++)
-                        {
-                            foreach (Robot robot in w.GetRobots())
-                            {
-                                robot.addtask(new MoveTask(w.GetShelfs()[grabshelfs[e]].GetNode()));
-                                robot.addtask(new PickupShelf(w.GetShelfs()[grabshelfs[e]]));
-                                robot.addtask(new MoveTask('α'));
-                                robot.addtask(new DropShelf(15.25, 0.75));
-                                e++;
-                            }
-                        }
-                    }
-                    else // als er robots * 2 * 3 in het dock staan dan worden er boten gelost
-                    {
-                        for (int i = 0; i < robotshelfs; i++)
-                        {
-                            int temp = rnd.Next(1, 28);
-                            if (w.GetShelfs()[temp].x == 15.25 && !grabshelfs.Contains(temp))
-                            {
-                                grabshelfs[i] = temp;
-                            }
-                            else i--;
-                        }
-
-                        int e = 0;
-                        for (int a = 0; a < 2; a++)
-                        {
-                            foreach (Robot robot in w.GetRobots())
-                            {
-                                robot.addtask(new PickupShelf(w.GetShelfs()[grabshelfs[e]]));
-                                robot.addtask(new MoveTask(w.GetShelfs()[grabshelfs[e]].GetNode()));
-                                robot.addtask(new DropShelf(w.GetShelfs()[grabshelfs[e]].defx, w.GetShelfs()[grabshelfs[e]].defz));
-                                robot.addtask(new MoveTask('α'));                               
-                                e++;
-                            }
-                        }
-                        shelfsindock -= robotshelfs;
-                    }
-                }
-                else if(w.GetShip().IsPaused() && docked)
-                {
-                    int i = 0;
-                    foreach(Shelf dock in w.GetShelfs())
-                    {
-                        if (dock.x == 15.25)
-                            i++;
-                    }
-                    if (i == shelfsindock)
-                    {
-                        w.GetShip().Pause(false);
-                        docked = false;
-                    }                       
-                }
+                master.Check(w);
                 Thread.Sleep(tickTime * 5);
             }           
         }
