@@ -15,13 +15,13 @@ namespace Models
             type = "shelf";
             guid = Guid.NewGuid();
 
-            this._x = x;
-            this._y = y;
-            this._z = z;
+            _x = x;
+            _y = y;
+            _z = z;
 
-            this._rX = rotationX;
-            this._rY = rotationY;
-            this._rZ = rotationZ;
+            _rX = rotationX;
+            _rY = rotationY;
+            _rZ = rotationZ;
 
             defx = x;
             defz = z;
@@ -32,27 +32,9 @@ namespace Models
             this.c = c;
         }
 
-
         public char GetNode()
         {
-            return this.c;
-        }
-
-        public bool ContainsItems()
-        {
-            return (items.Count > 0);
-        }
-
-        public List<string> GetItems()
-        {
-            return items;
-        }
-
-        public List<string> MoveItems()
-        {
-            List<string> tmp = items;
-            items = new List<string>();
-            return items;
-        }
+            return c;
+        }       
     }
 }

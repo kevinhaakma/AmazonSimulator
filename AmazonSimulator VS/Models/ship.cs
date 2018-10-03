@@ -9,29 +9,29 @@ namespace Models
 
         public Ship(double x, double y, double z, double rotationX, double rotationY, double rotationZ)
         {
-            this.type = "ship";
-            this.guid = Guid.NewGuid();
+            type = "ship";
+            guid = Guid.NewGuid();
 
-            this._x = x;
-            this._y = y;
-            this._z = z;
+            _x = x;
+            _y = y;
+            _z = z;
 
-            this._rX = rotationX;
-            this._rY = rotationY;
-            this._rZ = rotationZ;
+            _rX = rotationX;
+            _rY = rotationY;
+            _rZ = rotationZ;
         }
 
         public override bool Update(int tick, int tickCount)
         {
-            if (!this.IsPaused())
+            if (!IsPaused())
             {
                 _x += 0.125;
-                this.Move((_x), 0, 0);
+                Move((_x), 0, 0);
             }
                      
-            if (!this.IsPaused() && _x == 15)
+            if (!IsPaused() && _x == 15)
             {
-                this.Pause(true);
+                Pause(true);
             }
             else if (_x == 30)
             {
@@ -40,6 +40,7 @@ namespace Models
 
             _rZ = Math.Cos(Convert.ToDouble(tickCount) / 5) / 64;
             _rX = Math.Sin(Convert.ToDouble(tickCount) / 5) / 64;
+
             return true;
         }
     }

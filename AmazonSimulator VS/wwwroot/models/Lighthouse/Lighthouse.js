@@ -36,7 +36,7 @@
                 var geometry = new THREE.SphereGeometry(2.5, 2.5, 2.5);
                 var material = new THREE.MeshBasicMaterial({ color: 0xffe9a2 });
                 var placeholder = new THREE.Mesh(geometry, material);
-                placeholder.position.set(30, 4, -30);
+                placeholder.position.set(32.5, 4, -47.5);
                 placeholder.rotation.y += Math.PI / 16;
                 placeholder.name = "LightPointer";
                 placeholder.visible = false;
@@ -55,8 +55,6 @@
 
                 selfRef.add(group);
             });
-
         });
     }
-
 }

@@ -6,7 +6,7 @@ namespace Models
 {
     public class Pathfinder
     {
-        Dictionary<char, Dictionary<char, int>> vertices = new Dictionary<char, Dictionary<char, int>>();
+        private Dictionary<char, Dictionary<char, int>> vertices = new Dictionary<char, Dictionary<char, int>>();
 
         public void add_vertex(char name, Dictionary<char, int> edges)
         {

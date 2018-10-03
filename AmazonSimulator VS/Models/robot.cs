@@ -10,38 +10,40 @@ namespace Models
         private List<Tasks> tasks = new List<Tasks>();
         private Shelf shelf;
         private bool moving = false;
+        private char CurrentPos = 'α';
 
         public Robot(double x, double y, double z, double rotationX, double rotationY, double rotationZ)
         {
-            this.type = "robot";
-            this.status = "idle";
+            type = "robot";
+            status = "idle";
 
-            this.guid = Guid.NewGuid();
+            guid = Guid.NewGuid();
 
-            this._x = x;
-            this._y = y;
-            this._z = z;
+            _x = x;
+            _y = y;
+            _z = z;
 
-            this._rX = rotationX;
-            this._rY = rotationY;
-            this._rZ = rotationZ;
+            _rX = rotationX;
+            _rY = rotationY;
+            _rZ = rotationZ;
         }
 
         public override bool Update(int tick, int tickCount)
         {
             if (tasks.Count == 0 && !moving)
             {
-                this.status = "idle";
+                status = "idle";
             }
             else if (tasks.Count > 0 && !moving){
                 if (tasks[0] is MoveTask)
                 {
                     MoveTask Task = tasks[0] as MoveTask;
-                    this.MoveTo(Task.getinfo());
+                    MoveTo(Task.getinfo());
+                    CurrentPos = Task.getinfo();
                     if(Task.getinfo() == 'α')
-                        this.status = "Omw to dock";
+                        status = "Omw to dock";
                     else
-                        this.status = "Omw to " + Task.getinfo();
+                        status = "Omw to " + Task.getinfo();
                     moving = true;
                 }
                 else if (tasks[0] is DropShelf)
@@ -54,8 +56,8 @@ namespace Models
                 else if (tasks[0] is PickupShelf)
                 {
                     PickupShelf Task = tasks[0] as PickupShelf;
-                    this.shelf = Task.getinfo();
-                    this.shelf.Move(_x,0.3,_z);
+                    shelf = Task.getinfo();
+                    shelf.Move(_x,0.3,_z);
                     tasks.RemoveAt(0);
                 }
             }
@@ -110,29 +112,10 @@ namespace Models
 
         public void MoveTo(char Char)
         {
-            Node ClosestNode = null;
-            char CurrentPos = 'A';
-            foreach (Node node in World.GetNodes())
-            {
-                if(ClosestNode != null)
-                {
-                    if ((_x - node.x) < (ClosestNode.x - node.x) || (_z - node.z) < (ClosestNode.z - node.z))
-                    {
-                        ClosestNode = node;
-                    }
-                }
-
-                else
-                {
-                    ClosestNode = node;
-                }
-            }
-
-            CurrentPos = ClosestNode.c;
-
             List<char> PathToDestChar = new List<char>();
 
             World.pathfinder.shortest_path(CurrentPos, Char).ForEach(x => PathToDestChar.Add(x));
+            PathToDestChar.Reverse();
 
             foreach (char c in PathToDestChar)
             {
@@ -144,7 +127,7 @@ namespace Models
                     }
                 }
             }
-            PathToDestNodes.Reverse();
+
             needsUpdate = true;
         }
 

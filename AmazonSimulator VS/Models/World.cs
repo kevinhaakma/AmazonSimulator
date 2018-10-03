@@ -89,16 +89,13 @@ namespace Models {
 
             foreach (Node node in nodes)
             {
-                //worldObjects.Add(node.placeholder);
                 node.SetName(Vertex.First());
                 foreach(Shelf shelf in node.GetAllShelves())
                 {
                     shelf.SetNode(Vertex.First());
                 }
                 Vertex.RemoveAt(0);
-            }
-
-            
+            }            
         }
 
         private Robot CreateRobot() {

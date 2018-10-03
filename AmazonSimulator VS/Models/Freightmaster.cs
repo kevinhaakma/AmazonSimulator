@@ -5,10 +5,10 @@ namespace Models
 {
     public class Freightmaster
     {
-        bool docked = false;
-        Random rnd = new Random();
-        int[] grabshelfs;
-        int shelfsindock = 0;
+        private bool docked = false;
+        private Random rnd = new Random();
+        private int[] grabshelfs;
+        private int shelfsindock = 0;
 
         public void Check(World w)
         {

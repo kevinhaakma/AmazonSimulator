@@ -11,7 +11,7 @@ namespace Controllers {
     }
     public class SimulationController {
         private World w;
-        Freightmaster master = new Freightmaster();
+        private Freightmaster master = new Freightmaster();
         private List<ObservingClient> views = new List<ObservingClient>();
         private bool running = false;
         private int tickTime = 25;
